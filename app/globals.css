@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 修正：!important を消す（これで各ページで色が変えられます） */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #000; 
+}
+
+/* アニメーション設定（そのまま） */
+@keyframes pan-br {
+  0% { transform: scale(1.1) translate(0, 0); }
+  100% { transform: scale(1.2) translate(-2%, -2%); }
+}
+
+@keyframes pan-tl {
+  0% { transform: scale(1.1) translate(0, 0); }
+  100% { transform: scale(1.2) translate(2%, 2%); }
+}
+
+.animate-pan-br { animation: pan-br 3s ease-in-out infinite alternate; }
+.animate-pan-tl { animation: pan-tl 4s ease-in-out infinite alternate; }
