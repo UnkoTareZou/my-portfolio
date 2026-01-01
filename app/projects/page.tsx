@@ -19,7 +19,7 @@ export default function ProjectsPage() {
     reader.readAsDataURL(file);
   };
 
-  <h2>中野恭輔</h2>
+  
 
   // 2. 画像を白黒に加工する処理
   const processImage = () => {
@@ -99,8 +99,7 @@ export default function ProjectsPage() {
             onClick={processImage}
             disabled={!image}
             style={{ 
-              marginTop: '40px', width: '100%', py: '20px', backgroundColor: 'black', color: 'white', 
-              borderRadius: '50px', fontWeight: '900', fontSize: '1.2rem', padding: '15px',
+              marginTop: '40px', width: '100%', py: '20px', backgroundColor: 'black', color: 'white',              borderRadius: '50px', fontWeight: '900', fontSize: '1.2rem', padding: '15px',
               cursor: 'pointer', transition: 'transform 0.2s',
               opacity: image ? 1 : 0.5
             }}
