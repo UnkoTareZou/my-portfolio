@@ -19,7 +19,9 @@ export default function ProjectsPage() {
     reader.readAsDataURL(file);
   };
 
-  // 2. 画像を白黒に加工する処理（画像処理ロジック）
+  <h2>中野恭輔</h2>
+
+  // 2. 画像を白黒に加工する処理
   const processImage = () => {
     const canvas = canvasRef.current;
     if (!canvas || !image) return;
@@ -29,65 +31,66 @@ export default function ProjectsPage() {
     const img = new Image();
     img.src = image;
     img.onload = () => {
-      // キャンバスのサイズを画像に合わせる
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
 
-      // ピクセルデータを取得
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
 
-      // 全ピクセルをループして加工（ここが画像処理の核！）
       for (let i = 0; i < data.length; i += 4) {
         const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-        data[i]     = avg; // 赤 (R)
-        data[i + 1] = avg; // 緑 (G)
-        data[i + 2] = avg; // 青 (B)
-        // data[i + 3] は透明度 (A) なのでそのまま
+        data[i]     = avg;
+        data[i + 1] = avg;
+        data[i + 2] = avg;
       }
-
-      // 加工したデータをキャンバスに戻す
       ctx.putImageData(imageData, 0, 0);
     };
   };
 
   return (
-    <main className="min-h-screen bg-slate-900 text-white p-10">
-      <Link href="/" className="text-gray-400 hover:text-white transition-colors">
+    <main style={{ backgroundColor: 'white', minHeight: '100vh', color: 'black' }} className="p-10">
+      {/* 背景色を白に強制 */}
+      <style dangerouslySetInnerHTML={{ __html: `body { background-color: white !important; }`}} />
+
+      <Link href="/" style={{ fontWeight: 'bold', color: 'black', textDecoration: 'none', borderBottom: '2px solid black' }}>
         ← BACK TO HOME
       </Link>
 
       <div className="max-w-4xl mx-auto mt-10">
-        <h1 className="text-4xl font-bold mb-8">IMAGE PROCESSOR</h1>
+        <h1 style={{ fontSize: '3rem', fontWeight: '900', marginBottom: '40px', borderBottom: '8px solid black', display: 'inline-block' }}>
+          IMAGE PROCESSOR
+        </h1>
         
-        <div className="bg-slate-800 p-8 rounded-3xl border border-white/10 shadow-xl">
+        {/* メインのカード部分：白背景に黒枠の「中野スタイル」に変更 */}
+        <div style={{ backgroundColor: '#f9f9f9', padding: '40px', borderRadius: '30px', border: '4px solid black', boxShadow: '10px 10px 0px rgba(0,0,0,1)' }}>
+          
           {/* 画像アップロード部分 */}
           <div className="mb-8">
-            <label className="block text-sm font-medium mb-4 text-gray-400">画像を選択してください</label>
+            <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>画像を選択してください</label>
             <input 
               type="file" 
               accept="image/*" 
               onChange={handleImageChange}
-              className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+              style={{ padding: '10px', width: '100%', border: '2px dashed black', borderRadius: '10px' }}
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* 元画像プレビュー */}
             <div>
-              <p className="text-sm mb-2 text-gray-500 text-center">ORIGINAL</p>
+              <p style={{ fontWeight: 'bold', textAlign: 'center', marginBottom: '10px' }}>ORIGINAL</p>
               {image ? (
-                <img src={image} alt="Original" className="w-full rounded-lg shadow-lg" />
+                <img src={image} alt="Original" style={{ width: '100%', borderRadius: '10px', border: '2px solid black' }} />
               ) : (
-                <div className="w-full h-48 bg-slate-700 rounded-lg flex items-center justify-center text-gray-500">No Image</div>
+                <div style={{ width: '100%', height: '200px', backgroundColor: '#eee', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', border: '2px solid #ddd' }}>No Image</div>
               )}
             </div>
 
             {/* 加工後表示エリア */}
             <div>
-              <p className="text-sm mb-2 text-gray-500 text-center">PROCESSED</p>
-              <canvas ref={canvasRef} className="w-full rounded-lg shadow-lg bg-slate-700" />
+              <p style={{ fontWeight: 'bold', textAlign: 'center', marginBottom: '10px' }}>PROCESSED</p>
+              <canvas ref={canvasRef} style={{ width: '100%', borderRadius: '10px', border: '2px solid black', backgroundColor: '#eee' }} />
             </div>
           </div>
 
@@ -95,17 +98,25 @@ export default function ProjectsPage() {
           <button 
             onClick={processImage}
             disabled={!image}
-            className="mt-8 w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ 
+              marginTop: '40px', width: '100%', py: '20px', backgroundColor: 'black', color: 'white', 
+              borderRadius: '50px', fontWeight: '900', fontSize: '1.2rem', padding: '15px',
+              cursor: 'pointer', transition: 'transform 0.2s',
+              opacity: image ? 1 : 0.5
+            }}
+            className="hover:scale-[1.02] active:scale-[0.98]"
           >
             GRAYSCALE CONVERT
           </button>
         </div>
 
-        <div className="mt-8 p-6 bg-blue-900/20 border border-blue-500/30 rounded-2xl">
-          <h3 className="text-blue-400 font-bold mb-2">Technical Note:</h3>
-          <p className="text-sm text-gray-400 leading-relaxed">
+        {/* 技術ノートの部分 */}
+        <div style={{ marginTop: '40px', padding: '24px', backgroundColor: '#f0f7ff', borderLeft: '10px solid #0066ff', borderRadius: '10px' }}>
+          <h3 style={{ color: '#0066ff', fontWeight: 'bold', marginBottom: '10px' }}>Technical Note:</h3>
+          <p style={{ fontSize: '0.9rem', lineHeight: '1.6', color: '#444' }}>
             このプログラムは、Canvas APIを使用して画像のRGBAデータを直接操作しています。
             各ピクセルの輝度を平均化することで、リアルタイムなグレースケール変換を実現しています。
+            <strong>（大学で学んでいる情報工学の知識を応用しています）</strong>
           </p>
         </div>
       </div>
