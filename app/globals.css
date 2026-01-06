@@ -22,3 +22,71 @@ html, body {
 
 .animate-pan-br { animation: pan-br 3s ease-in-out infinite alternate; }
 .animate-pan-tl { animation: pan-tl 4s ease-in-out infinite alternate; }
+
+/* 既存の .manga-panel:hover をこれに書き換えろ！ */
+.manga-panel:hover {
+  /* ホバーした時にだけ、うっすらドット模様を重ねる */
+  background-image: radial-gradient(#ccc 15%, transparent 16%);
+  background-size: 4px 4px; /* ドットの細かさ */
+  transform: translateY(-5px); /* ちょっと上に浮かす */
+  box-shadow: 15px 15px 0px rgba(0,0,0,1) !important;
+}
+
+/* まず、パネル自体に集中線を表示するための準備 */
+.manga-panel {
+  /* 既存のスタイルに加えて、これを追加 */
+  position: relative;
+  overflow: hidden; /* 集中線がはみ出さないように */
+}
+
+/* 疑似要素で集中線を作る！ */
+.manga-panel::after {
+  content: "";
+  position: absolute;
+  inset: -50%; /* 親要素より大きく広げる */
+  background: repeating-conic-gradient(
+    from 0deg,
+    transparent 0deg 10deg,
+    rgba(0, 0, 0, 0.1) 10deg 20deg /* 薄い黒のストライプ */
+  );
+  opacity: 0; /* 普段は隠しておく */
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* マウス操作を邪魔しないように */
+  z-index: 1; /* 画像より手前、文字より奥 */
+}
+
+
+
+
+h1{
+/* ホバーした時の画像や中身のフィルタを変更 */
+.manga-panel:hover img,
+.manga-panel:hover div {
+  /* コントラストを上げて、完全に白黒にする */
+  filter: contrast(1.5) grayscale(100%) !important;
+  transition: filter 0.3s ease;
+}
+
+}h1
+
+/* もともとセピアがかかっている画像の調整 */
+.manga-panel:hover img[style*="sepia"] {
+    filter: contrast(1.5) grayscale(100%) sepia(0) !important;
+}
+/* ※注意：文字が集中線の下に隠れないように、文字要素には z-index: 2 以上を指定する必要があるかもしれないぜ！ */
+
+
+/* 制作物一覧のパネルにだけ「ドンッ！」を出す例 */
+.branch-btn:hover::before {
+ /* content: "ドンッ！！";*/
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-family: "Impact", "Arial Black", sans-serif; /* 太いフォントで */
+  font-size: 2rem;
+  color: black;
+  -webkit-text-stroke: 1px white; /* 白い縁取りでマンガっぽく */
+  transform: rotate(-10deg);
+  z-index: 10;
+  pointer-events: none;
+}

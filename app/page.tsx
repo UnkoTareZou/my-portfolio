@@ -1,116 +1,159 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import comicImages from './comic-list.json';
 
-export default function TopPage() {
-  const images = ['/bg1.jpg', '/bg2.jpg', '/bg3.png', '/bg4.jpg', '/bg5.png', '/bg6.png'];
+export default function MangaRandomTopPage() {
+  // --- 1. ロジック：画像リストとシャッフル ---
+  const allImages = useMemo(() => (comicImages?.length > 0 ? comicImages : []), []);
+  const [panelImages, setPanelImages] = useState<string[]>([]);
   const [isVisible, setIsVisible] = useState(true);
   const [isFading, setIsFading] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    if (allImages.length === 0) return;
+
+    const shuffle = () => setPanelImages([...allImages].sort(() => Math.random() - 0.5));
+    shuffle(); // 初回実行
+
+    const shuffleInterval = setInterval(shuffle, 3000);
     const fadeTimer = setTimeout(() => setIsFading(true), 1500);
     const removeTimer = setTimeout(() => setIsVisible(false), 3000);
-    const slideTimer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 6000);
+    
     return () => {
+      clearInterval(shuffleInterval);
       clearTimeout(fadeTimer);
       clearTimeout(removeTimer);
-      clearInterval(slideTimer);
     };
-  }, [images.length]);
+  }, [allImages]);
+
+  // --- 2. スタイル：共通設定 ---
+  const panelBaseStyle: React.CSSProperties = {
+    backgroundColor: 'white',
+    border: '8px solid black',
+    position: 'relative',
+    overflow: 'hidden',
+    boxShadow: '10px 10px 0px rgba(0,0,0,1)',
+    transition: 'all 0.3s ease',
+  };
+
+  const getImg = (idx: number) => (panelImages[idx] ? `/comic/${panelImages[idx]}` : '');
 
   return (
-    <main style={{ backgroundColor: 'white', minHeight: '100vh', width: '100%', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', paddingBottom: '80px' }}>
-      
-      {/* --- 1. 背景画像 (一番奥) --- */}
-<img 
-  src="/bg_top.jpg" // publicフォルダ内の画像名に書き換えてください
-  alt=""
-  style={{ 
-    position: 'fixed', 
-    inset: 0, 
-    width: '100%', 
-    height: '100%', 
-    objectFit: 'cover', 
-    zIndex: 0  // 一番奥
-  }}
-/>
+    <main style={mainContainerStyle}>
+      <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
 
-{/* --- 2. 背景を白っぽくしてボタンやモニターを見やすくする膜 --- */}
-<div 
-  style={{ 
-    position: 'fixed', 
-    inset: 0, 
-    backgroundColor: 'rgba(255, 255, 255, 0.7)', // 0.7を小さくすると画像が濃くなります
-    zIndex: 1  // 画像の上、コンテンツの下
-  }} 
-/>
-
-      <style dangerouslySetInnerHTML={{ __html: `body { background-color: white !important; }`}} />
-
-      {/* --- A. 導入スプラッシュ画面 --- */}
+      {/* スプラッシュ画面 */}
       {isVisible && (
-        <div style={{ backgroundColor: 'white', color: 'black', position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'opacity 1500ms ease-in-out', opacity: isFading ? 0 : 1, pointerEvents: isFading ? 'none' : 'auto' }}>
-          <h1 style={{ fontSize: 'clamp(2rem, 8vw, 5rem)', fontWeight: '900', textAlign: 'center', letterSpacing: '0.2em' }}>
-            中野恭輔<br />ポートフォリオ
-          </h1>
+        <div style={{ ...splashStyle, opacity: isFading ? 0 : 1 }}>
+          <h1 style={splashTitleStyle}>NAKANO PORTFOLIO</h1>
         </div>
       )}
 
-      {/* --- B. 3Dモニターエリア（右側に配置） --- */}
-      <div style={{ 
-        position: 'absolute', 
-        inset: 0, 
-        zIndex: 10, 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'flex-end', // ★ flex-start から flex-end に変更して右寄せ
-        paddingRight: '10%',       // ★ paddingLeft から paddingRight に変更
-        paddingBottom: '100px', 
-        pointerEvents: 'none' 
-      }}>
-        <div style={{ perspective: '1200px', width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
-          
-          <div 
-            style={{ 
-              position: 'relative',
-              backgroundColor: '#1a1a1a', 
-              padding: '12px',
-              borderRadius: '25px',
-              boxShadow: '0 30px 60px rgba(0,0,0,0.15)', 
-              transform: 'rotateX(15deg) rotateY(-35deg) rotateZ(2deg) scale(0.7)',
-              border: '4px solid #000',
-              transformStyle: 'preserve-3d' 
-            }}
-          >
-            <div style={{ position: 'relative', width: '70vw', maxWidth: '900px', aspectRatio: '16/9', overflow: 'hidden', borderRadius: '15px', backgroundColor: 'black', border: '2px solid #333', transformStyle: 'preserve-3d' }}>
-              {images.map((src, index) => (
-                <img key={`${src}-${index}`} src={src} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 2000ms ease-in-out', opacity: index === currentIndex ? 1 : 0, zIndex: index === currentIndex ? 1 : 0, filter: 'brightness(0.95)', transform: 'translateZ(1px)' }} />
-              ))}
-              <div style={{ position: 'absolute', inset: 0, zIndex: 5, background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%)', pointerEvents: 'none', transform: 'translateZ(2px)' }} />
-            </div>
-          </div>
+      {/* --- メインコンテンツ：コマ割り --- */}
+      
+      {/* タイトルコマ */}
+      <div className="manga-panel" style={{ ...panelBaseStyle, gridArea: '1 / 1 / 5 / 7', transform: 'rotate(-1deg)' }}>
+        <div style={titleContentStyle}>
+          <h2 style={titleTextStyle}>ENGINEER<br />RECONSTRUCTION</h2>
+          <span style={badgeStyle}>TOKYO CITY UNIV. 2026.03</span>
         </div>
       </div>
 
-      {/* --- C. ボタン部分（若干左に配置のまま） --- */}
-      <div style={{ position: 'relative', zIndex: 20, display: 'flex', gap: '25px', width: '100%', justifyContent: 'flex-start', paddingLeft: '15%', paddingBottom: '20px' }}>
-        <Link href="/about">
-          <div className="hover:scale-105 transition-transform" style={{ backgroundColor: 'white', height: '70px', width: '220px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '100px', border: '5px solid black', cursor: 'pointer', boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: '1000', color: 'black', letterSpacing: '0.3em' }}>自己紹介</h2>
-          </div>
-        </Link>
-        <Link href="/projects">
-          <div className="hover:scale-105 transition-transform" style={{ backgroundColor: 'white', height: '70px', width: '220px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '100px', border: '5px solid black', cursor: 'pointer', boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: '1000', color: 'black', letterSpacing: '0.1em' }}>制作物</h2>
-          </div>
-        </Link>
+      {/* 画像コマ1 */}
+      <div className="manga-panel" style={{ ...panelBaseStyle, gridArea: '1 / 7 / 8 / 10', transform: 'rotate(1deg)' }}>
+        {getImg(0) && <img src={getImg(0)} alt="" style={imgStyle} />}
       </div>
+
+      {/* 研究紹介コマ */}
+      <div className="manga-panel" style={{ ...panelBaseStyle, gridArea: '1 / 10 / 6 / 13', transform: 'rotate(-0.5deg)' }}>
+        <div style={{ padding: '15px', fontWeight: '800' }}>
+          <p style={{ borderBottom: '2px solid black' }}>研究：情報科学科</p>
+          <p className="mt-2 text-xs">符号理論を用いたデータの最適化。</p>
+        </div>
+      </div>
+
+      {/* 根性コマ */}
+      <div className="manga-panel" style={{ ...panelBaseStyle, gridArea: '5 / 1 / 8 / 7', transform: 'rotate(0.5deg)', backgroundColor: 'black', color: 'white' }}>
+        <div style={konjoContentStyle}>
+  <div style={{ fontSize: '1.2vw', opacity: 0.8 }}>私にはガッツがあります</div>
+  
+  {/* ここで文字サイズをドカンと大きくする！ */}
+  <div style={{ 
+    fontSize: '2.2vw', 
+    fontWeight: '1000', 
+    color: '#ff4d4d', // 燃えるような赤
+    lineHeight: '1.2',
+    marginTop: '10px'
+  }}>
+    自力で学費<br />
+    450万円を完納
+  </div>
+</div>
+      </div>
+
+      {/* 画像コマ2 */}
+      <div className="manga-panel" style={{ ...panelBaseStyle, gridArea: '6 / 10 / 13 / 13', transform: 'rotate(1.5deg)' }}>
+        {getImg(1) && <img src={getImg(1)} alt="" style={imgStyle} />}
+      </div>
+
+      {/* リンクボタン：自己紹介 */}
+      <Link href="/about" style={{ gridArea: '8 / 1 / 13 / 5', textDecoration: 'none' }}>
+        <div className="manga-panel branch-btn" style={panelBaseStyle}>
+          <div className="centered-content"><h3>自己紹介</h3></div>
+        </div>
+      </Link>
+
+      {/* リンクボタン：制作物 */}
+      <Link href="/projects" style={{ gridArea: '8 / 5 / 13 / 10', textDecoration: 'none' }}>
+        <div className="manga-panel branch-btn" style={panelBaseStyle}>
+          <div className="centered-content"><h3>制作物一覧</h3></div>
+        </div>
+      </Link>
     </main>
   );
-
-
 }
+
+// --- 3. デザイン定義（外に出して見やすく！） ---
+
+const mainContainerStyle: React.CSSProperties = {
+  backgroundColor: '#f0f0f0',
+  height: '100vh',
+  overflow: 'hidden',
+  padding: '20px',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(12, 1fr)',
+  gridTemplateRows: 'repeat(12, 1fr)',
+  gap: '15px',
+  maxWidth: '1600px',
+  margin: '0 auto',
+  position: 'relative'
+};
+
+const splashStyle: React.CSSProperties = {
+  backgroundColor: 'white',
+  position: 'fixed',
+  inset: 0,
+  zIndex: 9999,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transition: 'opacity 1500ms'
+};
+
+const splashTitleStyle = { fontSize: '5vw', fontWeight: '900', fontStyle: 'italic', borderBottom: '20px solid black' };
+const imgStyle: React.CSSProperties = { width: '100%', height: '100%', objectFit: 'cover' };
+const titleContentStyle: React.CSSProperties = { padding: '20px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' };
+const titleTextStyle: React.CSSProperties = { fontSize: '3.5vw', fontWeight: '1000', fontStyle: 'italic', lineHeight: '0.9' };
+const badgeStyle: React.CSSProperties = { marginTop: '10px', fontWeight: '900', backgroundColor: 'black', color: 'white', padding: '5px 10px', width: 'fit-content' };
+const konjoContentStyle: React.CSSProperties = { padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' };
+
+const globalStyles = `
+  body { background-color: #f0f0f0 !important; overflow: hidden; }
+  .manga-panel:hover { transform: scale(1.03) rotate(1deg); z-index: 50; box-shadow: 20px 20px 0px rgba(0,0,0,1) !important; }
+  .branch-btn { height: 100%; cursor: pointer; border: 12px solid black !important; }
+  .branch-btn:hover { background-color: black !important; color: white !important; }
+  .centered-content { position: absolute; inset: 0; display: flex; alignItems: center; justifyContent: center; }
+  .centered-content h3 { font-size: 2.5vw; fontWeight: 1000; }
+`;
