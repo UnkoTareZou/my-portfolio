@@ -33,7 +33,7 @@ export default function GutsPage() {
           <h2 style={{ fontSize: '1.5rem', fontWeight: '900', marginBottom: '20px' }}>[証拠 02] 完遂の記録</h2>
           <p style={{ fontSize: '1.2rem', lineHeight: '2' }}>
             自力完納した学費：450万円<br />
-            背負っている覚悟：奨学金 920万円
+            背負っている覚悟：奨学金 万円
           </p>
         </section>
 
