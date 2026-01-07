@@ -90,7 +90,12 @@ export default function AboutPage() {
         <section className="manga-panel area-mission">
           <div className="mission-content">
             <h2 className="mission-title">ANY ROLE. ANY MISSION.</h2>
-            <p>およそ自分の力でできることなら、職種を問わず何でもやります。</p>
+            <p>「このポートフォリオを制作する過程で、私が本当にやりたいことは『コードを書くこと自体』ではなく、
+              『技術を用いて誰かの創作を支えること』だと確信しました。
+              そのため、当初のエンジニア志望に固執せず、テスト・CS等、
+              クリエイターの皆様に最も近い場所で、
+              自分のエンジニアリング知識とコミュニケーション能力を役立てたいと考えています。 
+              目的のためなら、どのような現場でも最速で結果を出します。」</p>
             <p className="mission-sub">多額の奨学金は、私の「逃げない覚悟」の証明です。</p>
           </div>
         </section>
