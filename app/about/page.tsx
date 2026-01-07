@@ -91,7 +91,7 @@ export default function AboutPage() {
           <div className="mission-content">
             <h2 className="mission-title">ANY ROLE. ANY MISSION.</h2>
             <p>およそ自分の力でできることなら、職種を問わず何でもやります。</p>
-            <p className="mission-sub">920万円の奨学金は、私の「逃げない覚悟」の証明です。</p>
+            <p className="mission-sub">多額の奨学金は、私の「逃げない覚悟」の証明です。</p>
           </div>
         </section>
 
