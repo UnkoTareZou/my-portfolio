@@ -13,117 +13,182 @@ export default function AboutPage() {
   const handleGutsClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setBaan({ x: e.clientX, y: e.clientY });
-    // 0.6秒の溜めの後にガッツ専用ページへ！
     setTimeout(() => {
       router.push('/guts');
     }, 600);
   };
 
   return (
-    <main style={{ backgroundColor: 'white', minHeight: '100vh', color: 'black', position: 'relative', fontFamily: 'sans-serif' }}>
+    <main className="about-manga-container">
+      <style dangerouslySetInnerHTML={{ __html: aboutStyles }} />
       
-      {/* バァーン！！演出用画像 */}
+      {/* バァーン！！演出 */}
       {baan && (
         <img 
           src="/baan.png" 
           alt="バァーン！！"
-          style={{
-            position: 'fixed', left: baan.x, top: baan.y,
-            transform: 'translate(-50%, -50%)', zIndex: 100000,
-            width: '40vw', pointerEvents: 'none',
-            animation: 'baan-pop 0.6s ease-out forwards'
-          }}
+          className="baan-overlay"
+          style={{ left: baan.x, top: baan.y }}
         />
       )}
 
-      {/* ナビゲーション */}
-      <nav style={{ position: 'fixed', top: '20px', left: '20px', zIndex: 100 }}>
+      {/* 固定ナビ */}
+      <nav className="fixed-nav">
         <Link href="/">
-          <div style={{ backgroundColor: 'white', border: '4px solid black', padding: '10px 20px', cursor: 'pointer', fontWeight: '900', boxShadow: '5px 5px 0px black' }}>
-            ← TOPに戻る
-          </div>
+          <div className="back-top-btn">← TOP</div>
         </Link>
       </nav>
 
-      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '100px 20px' }}>
+      {/* --- マンガ・グリッド・レイアウト --- */}
+      <div className="manga-page">
         
-        {/* --- 1. IDENTITY: セルシスへの誓い --- */}
-        <section style={{ marginBottom: '100px' }}>
-          <h1 style={{ fontSize: 'clamp(2rem, 8vw, 4rem)', fontWeight: '900', marginBottom: '30px', fontStyle: 'italic' }}>
-            <span style={{ backgroundColor: 'black', color: 'white', padding: '0 15px' }}>LOVE CELSYS</span>
-          </h1>
-          <div style={{ width: '100%', aspectRatio: '16/9', border: '8px solid black', boxShadow: '15px 15px 0px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/m-nYoPJ5HSE" title="Identity Video" frameBorder="0" allowFullScreen></iframe>
+        {/* 【大ゴマ】 1. LOVE CELSYS (一番デカく！) */}
+        <section className="manga-panel area-identity">
+          <div className="panel-header-badge">IDENTITY</div>
+          <h1 className="main-passion-title">LOVE CELSYS</h1>
+          <div className="video-wrapper">
+            <iframe 
+              width="100%" height="100%" 
+              src="https://www.youtube.com/embed/m-nYoPJ5HSE" 
+              title="Identity Video" frameBorder="0" allowFullScreen
+            ></iframe>
+          </div>
+          <div className="panel-caption">「描く」という情熱を、誰よりも理解し、支えたい。</div>
+        </section>
+
+        {/* 【中ゴマ】 2. GRIT & REALITY (ガッツボタン) */}
+        <section className="manga-panel area-grit" onClick={handleGutsClick}>
+          <div className="panel-header-badge">GRIT</div>
+          <div className="guts-button-panel">
+            <div className="guts-inner-text">
+              <p>450万を完済した、その「先」へ</p>
+              <h3>詳細な記録を見る</h3>
+              <span className="click-me-badge">CLICK HERE</span>
+            </div>
+            {/* ここに guts.png が背景として入る */}
+            <div className="guts-bg-image" style={{ backgroundImage: 'url(/guts.png)' }}></div>
           </div>
         </section>
 
-        {/* --- 2. GRIT & REALITY: ここにガッツのコマを配置！ --- */}
-        <section style={{ marginBottom: '120px' }}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: '900', backgroundColor: 'black', color: 'white', padding: '10px 30px', transform: 'rotate(-1deg)', display: 'inline-block', marginBottom: '40px' }}>
-            GRIT & REALITY
-          </h2>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px' }}>
-            
-            {/* 🚀 ガッツ・ボタンコマ (guts.png) */}
-            <div 
-              onClick={handleGutsClick}
-              style={{ 
-                border: '8px solid black', aspectRatio: '1/1', cursor: 'pointer',
-                backgroundImage: 'url(/guts.png)', backgroundSize: 'cover', backgroundPosition: 'center',
-                position: 'relative', overflow: 'hidden', boxShadow: '15px 15px 0px #000'
-              }}
-              className="guts-manga-panel"
-            >
-              <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '20px' }}>
-                <div style={{ fontSize: '1.2rem', fontWeight: '900' }}>450万を完済した、その「先」へ</div>
-                <div style={{ fontSize: '2rem', fontWeight: '1000', marginTop: '10px' }}>詳細な記録を<br />見る</div>
-                <div style={{ marginTop: '15px', backgroundColor: 'red', padding: '5px 15px', fontWeight: '900' }}>CRICK HERE</div>
-              </div>
+        {/* 【中ゴマ】 3. RESEARCH & INTELLECT */}
+        <section className="manga-panel area-intellect">
+          <div className="panel-header-badge">INTELLECT</div>
+          <div className="intellect-content">
+            <h2 className="sub-panel-title">RESEARCH</h2>
+            <p>応用数理研究室：符号理論</p>
+            <div className="code-snippet-box">
+              C言語による復号アルゴリズムの実装<br />
+              1万回の試行とスループットの追求
             </div>
-
-            {/* 概要テキストカード */}
-            <div style={{ padding: '30px', border: '6px solid black', backgroundColor: '#f9f9f9', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: '900', marginBottom: '15px', borderBottom: '4px solid black' }}>数字が語る、私の根性。</h3>
-              <p style={{ fontSize: '1rem', fontWeight: '700', lineHeight: '1.8' }}>
-                3年間の独学、学費450万円の自力完納、そして自由が丘での全国12位の戦績。
-                この先のストーリーは私が絶対に折れない「心の強さ」の証明であり、
-                私が背負う多額の奨学金は、未来への投資であり、逃げ出さない「覚悟」の証明です。
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* --- 3. RESEARCH & INTELLECT --- */}
-        <section style={{ marginBottom: '100px' }}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: '900', borderBottom: '8px solid black', display: 'inline-block', marginBottom: '40px' }}>
-            RESEARCH & INTELLECT
-          </h2>
-          <div style={{ padding: '30px', border: '4px solid black', borderRadius: '20px' }}>
-            <p style={{ lineHeight: '1.8', fontWeight: '700' }}>
-              応用数理研究室にて、符号理論を用いたスループット改善を研究。
-              C言語で独自の復号アルゴリズムを実装し、1万回のシミュレーションでその有効性を証明しました。
+            <p className="intellect-desc">
+              学費完納と並行し、技術への執着も一切緩めませんでした。
             </p>
           </div>
         </section>
 
-        {/* --- 4. THE MISSION --- */}
-        <section style={{ textAlign: 'center', padding: '60px 0' }}>
-          <div style={{ padding: '50px', border: '10px solid black', backgroundColor: '#000', color: '#fff' }}>
-            <h2 style={{ fontSize: '2rem', fontWeight: '1000' }}>ANY ROLE. ANY MISSION.</h2>
-            <p style={{ marginTop: '20px', fontWeight: '800' }}>およそ自分の力でできることなら、職種を問わず何でもやります。</p>
+        {/* 【横長コマ】 4. MISSION (締め) */}
+        <section className="manga-panel area-mission">
+          <div className="mission-content">
+            <h2 className="mission-title">ANY ROLE. ANY MISSION.</h2>
+            <p>およそ自分の力でできることなら、職種を問わず何でもやります。</p>
+            <p className="mission-sub">920万円の奨学金は、私の「逃げない覚悟」の証明です。</p>
           </div>
         </section>
-      </div>
 
-      <style dangerouslySetInnerHTML={{ __html: `
-        .guts-manga-panel:hover { transform: scale(1.02) rotate(1deg); }
-        @keyframes baan-pop {
-          0% { transform: translate(-50%, -50%) scale(0.1) rotate(-10deg); opacity: 0; }
-          20% { transform: translate(-50%, -50%) scale(1.3) rotate(5deg); opacity: 1; }
-          100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
-        }
-      `}} />
+      </div>
     </main>
   );
 }
+
+// --- マンガ風グリッドCSS ---
+const aboutStyles = `
+  .about-manga-container {
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    padding: 60px 20px;
+    background-image: radial-gradient(#ccc 1.5px, transparent 1.5px);
+    background-size: 25px 25px;
+  }
+
+  .fixed-nav { position: fixed; top: 20px; left: 20px; z-index: 1000; }
+  .back-top-btn { background: white; border: 4px solid black; padding: 10px 20px; font-weight: 900; box-shadow: 5px 5px 0px black; cursor: pointer; }
+
+  .manga-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 20px;
+    /* PCでのグリッド割り当て */
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  /* パネル共通 */
+  .manga-panel {
+    background: white;
+    border: 8px solid black;
+    box-shadow: 15px 15px 0px black;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+  }
+  .manga-panel:hover { transform: scale(1.01); }
+
+  .panel-header-badge {
+    position: absolute; top: 0; left: 0; background: black; color: white;
+    padding: 5px 15px; font-weight: 900; z-index: 10;
+  }
+
+  /* 各エリアの配置 (PC) */
+  @media (min-width: 900px) {
+    .area-identity { grid-area: 1 / 1 / 7 / 13; transform: rotate(-0.5deg); } /* 大ゴマ */
+    .area-grit { grid-area: 7 / 1 / 12 / 6; transform: rotate(0.5deg); }
+    .area-intellect { grid-area: 7 / 6 / 12 / 13; transform: rotate(-0.3deg); }
+    .area-mission { grid-area: 12 / 1 / 15 / 13; transform: rotate(0.2deg); }
+  }
+
+  /* スマホレイアウト */
+  @media (max-width: 899px) {
+    .manga-page { display: flex; flex-direction: column; }
+    .manga-panel { transform: none !important; margin-bottom: 30px; }
+    .main-passion-title { font-size: 2.5rem !important; }
+  }
+
+  /* 内部コンテンツ用スタイル */
+  .main-passion-title { 
+    font-size: clamp(3rem, 8vw, 6rem); font-weight: 1000; text-align: center; 
+    margin: 40px 0 20px; font-style: italic; letter-spacing: -2px;
+  }
+  .video-wrapper { width: 100%; aspect-ratio: 16/9; border-top: 4px solid black; border-bottom: 4px solid black; }
+  .panel-caption { padding: 15px; font-weight: 900; text-align: right; font-style: italic; }
+
+  /* ガッツボタン・パネル */
+  .guts-button-panel { flex: 1; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .guts-inner-text { z-index: 5; text-align: center; color: white; background: rgba(0,0,0,0.6); padding: 20px; border: 4px solid white; }
+  .guts-inner-text h3 { font-size: 2rem; font-weight: 1000; margin: 10px 0; }
+  .click-me-badge { background: red; padding: 5px 15px; font-weight: 900; }
+  .guts-bg-image { position: absolute; inset: 0; background-size: cover; background-position: center; transition: 0.3s; }
+  .area-grit:hover .guts-bg-image { transform: scale(1.1); }
+
+  /* 研究パネル */
+  .intellect-content { padding: 40px 20px; }
+  .sub-panel-title { font-size: 2rem; font-weight: 900; border-bottom: 6px solid black; display: inline-block; margin-bottom: 20px; }
+  .code-snippet-box { background: #eee; padding: 15px; border-left: 8px solid black; font-family: monospace; font-weight: 700; margin: 20px 0; }
+
+  /* ミッションパネル */
+  .area-mission { background: black; color: white; padding: 40px; text-align: center; }
+  .mission-title { font-size: 2.5rem; font-weight: 1000; margin-bottom: 10px; }
+  .mission-sub { opacity: 0.8; font-size: 0.9rem; margin-top: 10px; }
+
+  /* バァーン演出 */
+  .baan-overlay {
+    position: fixed; z-index: 100000; width: 40vw; pointer-events: none;
+    transform: translate(-50%, -50%); animation: baan-pop 0.6s ease-out forwards;
+  }
+  @keyframes baan-pop {
+    0% { transform: translate(-50%, -50%) scale(0.1) rotate(-10deg); opacity: 0; }
+    20% { transform: translate(-50%, -50%) scale(1.3) rotate(5deg); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+  }
+`;
