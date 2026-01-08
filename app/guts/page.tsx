@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import Link from 'next/link';
 
@@ -23,11 +24,19 @@ export default function GutsPage() {
         </div>
       )}
 
+      {/* ナビゲーションバー */}
       <nav className="sticky-nav">
         <Link href="/about">
           <div className="back-btn">← 自己PRに戻る</div>
         </Link>
-        <span className="nav-title">REPORT：GUTS & REALITY</span>
+        <span className="nav-title"></span>
+      </nav>
+
+      {/* 右上固定ボタン：z-indexを上げて確実に一番上に配置します */}
+      <nav className="go_next_page_container">
+        <Link href="/study">
+          <div className="go_ext_page">大学で学んだこと一覧へ →</div>
+        </Link>
       </nav>
 
       <div className="report-container">
@@ -76,7 +85,7 @@ export default function GutsPage() {
                 <p><strong>■ 店舗月間売上：1,650万円（歴代最高レコード）</strong></p>
               </div>
             </div>
-            {/* シフト画像：適切なサイズに制限 */}
+
             <div className="report-visual shift-visual" onClick={() => setSelectedImg('/shift.jpg')}>
               <img src="/shift.jpg" alt="シフト記録" />
               <p className="caption">図1：12月のシフト。この過密な記録が、ユーザーを支えるスタミナの証。
@@ -114,14 +123,12 @@ export default function GutsPage() {
             </div>
             
             <div className="visual-column-emphasized">
-              {/* 源泉徴収：超強調（極太枠 ＋ 1.1倍） */}
               <div className="report-visual gensen-impact" onClick={() => setSelectedImg('/gensen.png')}>
                 <img src="/gensen.png" alt="源泉徴収票" />
                 <div className="impact-badge">クリックで拡大</div>
                 <p className="caption">図2：2025年度 源泉徴収票。</p>
               </div>
               
-              {/* 学費領収書 */}
               <div className="report-visual tuition-small" onClick={() => setSelectedImg('/tuition.jpg')}>
                 <img src="/tuition.jpg" alt="学費領収書" />
                 <p className="caption">図3：450万円完納の一部。半期毎に収めていたため全ての画像は乗せられませんが、通帳は後日お見せできます。</p>
@@ -157,8 +164,6 @@ export default function GutsPage() {
   );
 }
 
-// --- CSS定義 ---
-
 const containerStyle: React.CSSProperties = {
   backgroundColor: '#f4f4f4',
   minHeight: '100vh',
@@ -167,8 +172,13 @@ const containerStyle: React.CSSProperties = {
 
 const gutsFinalStyles = `
   .sticky-nav { position: sticky; top: 0; background: rgba(255,255,255,0.98); border-bottom: 3px solid black; padding: 15px 40px; z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
-  .back-btn { font-weight: 900; color: black; border: 3px solid black; padding: 8px 20px; cursor: pointer; background: white; }
+  .back-btn { font-weight: 900; color: black; border: 3px solid black; padding: 8px 20px; cursor: pointer; background: white; text-decoration: none; }
   .nav-title { font-weight: 900; font-size: 1.1rem; }
+
+  /* 右上ボタンのコンテナ：z-indexを最強にしてsticky-navの上に乗せます */
+  .go_next_page_container { position: fixed; top: 12px; right: 20px; z-index: 2000; }
+  .go_ext_page { background: black; color: white; border: 3px solid black; padding: 10px 20px; font-weight: 900; cursor: pointer; text-decoration: none; transition: 0.2s; box-shadow: 4px 4px 0px #e63946; }
+  .go_ext_page:hover { background: white; color: black; box-shadow: 0px 0px 0px black; transform: translate(2px, 2px); }
 
   .report-container { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
   .report-header { border-left: 15px solid black; padding-left: 30px; margin-bottom: 80px; }
@@ -195,13 +205,7 @@ const gutsFinalStyles = `
   .shift-visual { max-width: 450px; margin-left: auto; }
   .shift-visual img { width: 100%; height: auto; object-fit: contain; }
 
-  /* 源泉徴収の超強調 */
-  .gensen-impact { 
-    transform: scale(1.1); 
-    border: 12px solid #e63946 !important; 
-    z-index: 10; 
-    box-shadow: 20px 20px 0px rgba(230, 57, 70, 0.15); 
-  }
+  .gensen-impact { transform: scale(1.1); border: 12px solid #e63946 !important; z-index: 10; box-shadow: 20px 20px 0px rgba(230, 57, 70, 0.15); }
   .gensen-impact img { width: 100%; height: auto; display: block; }
   .impact-badge { position: absolute; top: -15px; right: -15px; background: #e63946; color: white; padding: 5px 20px; font-weight: 900; font-size: 1.3rem; transform: rotate(5deg); box-shadow: 5px 5px 0px black; }
 

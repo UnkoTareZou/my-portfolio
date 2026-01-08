@@ -14,6 +14,8 @@ export default function StudyDetailPage() {
         </Link>
       </nav>
 
+      
+
       <div className="content-wrapper">
         <header className="page-header">
           <p className="label">ACADEMIC & RESEARCH</p>
@@ -102,6 +104,7 @@ export default function StudyDetailPage() {
 const studyStyles = `
   .study-container { background: #fdfdfd; color: #1a1a1a; min-height: 100vh; padding: 60px 20px; font-family: sans-serif; }
   .fixed-nav { position: fixed; top: 20px; left: 20px; z-index: 1000; }
+  .go_next_page{position: fixed; top: 20px; right: 20px; z-index: 1000;}
   .back-btn { background: #fff; border: 3px solid #000; padding: 10px 20px; font-weight: 900; box-shadow: 5px 5px 0px #000; cursor: pointer; }
 
   .content-wrapper { max-width: 1000px; margin: 0 auto; }

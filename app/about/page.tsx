@@ -28,9 +28,17 @@ export default function AboutPage() {
         </div>
       )}
 
+      {/* TOPへ戻る（左上固定） */}
       <nav className="fixed-nav">
         <Link href="/">
           <div className="back-top-btn">← TOP</div>
+        </Link>
+      </nav>
+
+      {/* 不屈の記録へ進む（右上固定） */}
+      <nav className="go_next_page">
+        <Link href="/guts">
+          <div className="go_ext_page">私の不屈の記録へ →</div>
         </Link>
       </nav>
 
@@ -93,18 +101,20 @@ export default function AboutPage() {
         <section className="manga-panel area-mission">
           <div className="panel-header-badge" style={{ background: '#e63946' }}>MY MISSION</div>
           <div className="mission-content">
-            <h2 className="mission-title">TO BE THE SUPPORT FOR ALL CREATORS.</h2>
+            <h2 className="mission-title">クリエイターの旅路の最良の同伴者として</h2>
             <div className="mission-quote">
               <p>
-                かつて過酷な環境にいた私を救ってくれたのは、貴社の製品が生み出した創作の世界でした。
-                今度は私が、世界中のクリエイターが1秒でも長く、何の不安もなく筆を動かし続けられる環境を守りたい。
+                かつて過酷な環境にいた私を救ってくれたのは、貴社の製品が生み出した創作の世界でした。<br />
+
+                今度は私が、世界中のクリエイターが1秒でも長く、何の不安もなく筆を動かし続けられる環境を守りたい。<br /><br />
+                6年間の接客で培った粘り強さ も、情報科学で学んだ技術も 、すべてはクリエイターとその先の皆様の笑顔のために捧げます。<br />
+                インフラ・テスト・CS、どのような役割であっても、それが創作を支えることに繋がるなら、私にとってこれ以上の喜びはありません。<br />
               
-                6年間の接客で培った粘り強さ も、情報科学で学んだ技術も 、すべてはクリエイターの皆様の笑顔のために捧げます。
-                インフラ・テスト・CS、どのような役割であっても、それが創作を支えることに繋がるなら、私にとってこれ以上の喜びはありません。
+                10年後20年後に実現しているクリエイターの旅路における創生を見たものとして最良の同伴者としてクリエイター様を支えることができればできればと思います。
               </p>
             </div>
             <div className="mission-footer">
-              <p className="mission-sub">自力で完納した学費、奨学金。この数字は私の「誰かを支え抜く覚悟」の重さです。</p>
+              <p className="mission-sub"></p>
             </div>
           </div>
         </section>
@@ -114,4 +124,49 @@ export default function AboutPage() {
   );
 }
 
-const aboutStyles = " .about-manga-container { background-color: #f0f0f0; min-height: 100vh; padding: 80px 20px; background-image: radial-gradient(#ccc 1.5px, transparent 1.5px); background-size: 25px 25px; } .fixed-nav { position: fixed; top: 20px; left: 20px; z-index: 1000; } .back-top-btn { background: white; border: 4px solid black; padding: 10px 20px; font-weight: 900; box-shadow: 5px 5px 0px black; cursor: pointer; } .manga-page { max-width: 1100px; margin: 0 auto; display: grid; gap: 25px; grid-template-columns: repeat(12, 1fr); } .manga-panel { background: white; border: 8px solid black; box-shadow: 15px 15px 0px black; position: relative; overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); } .link-panel:hover { transform: scale(1.02); cursor: pointer; box-shadow: 20px 20px 0px black; } .panel-header-badge { position: absolute; top: 0; left: 0; background: black; color: white; padding: 5px 15px; font-weight: 900; z-index: 10; font-size: 0.8rem; } @media (min-width: 900px) { .area-identity { grid-area: 1 / 1 / 7 / 13; transform: rotate(-0.5deg); } .area-grit { grid-area: 7 / 1 / 13 / 7; transform: rotate(0.5deg); } .area-intellect { grid-area: 7 / 7 / 13 / 13; transform: rotate(-0.3deg); } .area-mission { grid-area: 13 / 1 / 17 / 13; transform: rotate(0.2deg); } } @media (max-width: 899px) { .manga-page { display: flex; flex-direction: column; } .manga-panel { transform: none !important; margin-bottom: 40px; } } .main-passion-title { font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 1000; text-align: center; margin: 50px 0 30px; font-style: italic; letter-spacing: -3px; line-height: 1; } .video-wrapper { width: 100%; aspect-ratio: 16/9; border-top: 6px solid black; border-bottom: 6px solid black; background: #000; } .panel-message-footer { padding: 20px; font-weight: 900; text-align: center; font-style: italic; font-size: 1.1rem; color: #000; background: #fff; } .guts-button-panel { flex: 1; position: relative; min-height: 250px; display: flex; align-items: center; justify-content: center; } .guts-inner-text { position: relative; z-index: 5; text-align: center; color: white; background: rgba(0,0,0,0.7); padding: 30px; border: 4px solid white; margin: 20px; } .click-me-badge { background: #e63946; padding: 5px 15px; font-weight: 900; display: inline-block; } .guts-bg-image { position: absolute; inset: 0; background-size: cover; background-position: center; transition: 0.5s; } .intellect-content { padding: 40px 30px; flex: 1; display: flex; flex-direction: column; justify-content: center; } .sub-panel-title { font-size: 2rem; font-weight: 1000; border-bottom: 6px solid black; display: inline-block; margin-bottom: 15px; } .code-snippet-box { background: #000; color: #0f0; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 0.85rem; margin: 15px 0; } .intellect-link-label { margin-top: 10px; font-weight: 900; text-align: right; color: #e63946; font-style: italic; } .area-mission { background: #000; color: #fff; padding: 60px 40px; text-align: center; } .mission-title { font-size: clamp(2rem, 6vw, 4rem); font-weight: 1000; line-height: 0.9; margin-bottom: 20px; font-style: italic; } .mission-sub { font-weight: 800; font-style: italic; color: #aaa; margin-top: 15px; } .baan-overlay-container { position: fixed; z-index: 100000; transform: translate(-50%, -50%); pointer-events: none; } .baan-img { width: 50vw; max-width: 700px; animation: baan-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; } @keyframes baan-pop { 0% { transform: scale(0.1) rotate(-10deg); opacity: 0; } 30% { transform: scale(1.2) rotate(5deg); opacity: 1; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } } ";
+const aboutStyles = `
+  .about-manga-container { background-color: #f0f0f0; min-height: 100vh; padding: 80px 20px; background-image: radial-gradient(#ccc 1.5px, transparent 1.5px); background-size: 25px 25px; }
+  .fixed-nav { position: fixed; top: 20px; left: 20px; z-index: 1000; }
+  .go_next_page { position: fixed; top: 20px; right: 20px; z-index: 1000; }
+  .back-top-btn, .go_ext_page { background: white; border: 4px solid black; padding: 10px 20px; font-weight: 900; box-shadow: 5px 5px 0px black; cursor: pointer; text-decoration: none; color: black; }
+  .go_ext_page:hover { background: black; color: white; transform: translate(-2px, -2px); box-shadow: 7px 7px 0px #e63946; }
+  .manga-page { max-width: 1100px; margin: 0 auto; display: grid; gap: 25px; grid-template-columns: repeat(12, 1fr); }
+  .manga-panel { background: white; border: 8px solid black; box-shadow: 15px 15px 0px black; position: relative; overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .link-panel:hover { transform: scale(1.02); cursor: pointer; box-shadow: 20px 20px 0px black; }
+  .panel-header-badge { position: absolute; top: 0; left: 0; background: black; color: white; padding: 5px 15px; font-weight: 900; z-index: 10; font-size: 0.8rem; }
+  
+  @media (min-width: 900px) {
+    .area-identity { grid-area: 1 / 1 / 7 / 13; transform: rotate(-0.5deg); }
+    .area-grit { grid-area: 7 / 1 / 13 / 7; transform: rotate(0.5deg); }
+    .area-intellect { grid-area: 7 / 7 / 13 / 13; transform: rotate(-0.3deg); }
+    .area-mission { grid-area: 13 / 1 / 17 / 13; transform: rotate(0.2deg); }
+  }
+  
+  @media (max-width: 899px) {
+    .manga-page { display: flex; flex-direction: column; }
+    .manga-panel { transform: none !important; margin-bottom: 40px; }
+  }
+
+  .main-passion-title { font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 1000; text-align: center; margin: 50px 0 30px; font-style: italic; letter-spacing: -3px; line-height: 1; }
+  .video-wrapper { width: 100%; aspect-ratio: 16/9; border-top: 6px solid black; border-bottom: 6px solid black; background: #000; }
+  .panel-message-footer { padding: 20px; font-weight: 900; text-align: center; font-style: italic; font-size: 1.1rem; color: #000; background: #fff; }
+  .guts-button-panel { flex: 1; position: relative; min-height: 250px; display: flex; align-items: center; justify-content: center; }
+  .guts-inner-text { position: relative; z-index: 5; text-align: center; color: white; background: rgba(0,0,0,0.7); padding: 30px; border: 4px solid white; margin: 20px; }
+  .click-me-badge { background: #e63946; padding: 5px 15px; font-weight: 900; display: inline-block; }
+  .guts-bg-image { position: absolute; inset: 0; background-size: cover; background-position: center; transition: 0.5s; }
+  .intellect-content { padding: 40px 30px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .sub-panel-title { font-size: 2rem; font-weight: 1000; border-bottom: 6px solid black; display: inline-block; margin-bottom: 15px; }
+  .code-snippet-box { background: #000; color: #0f0; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 0.85rem; margin: 15px 0; }
+  .intellect-link-label { margin-top: 10px; font-weight: 900; text-align: right; color: #e63946; font-style: italic; }
+  .area-mission { background: #000; color: #fff; padding: 60px 40px; text-align: center; }
+  .mission-title { font-size: clamp(2rem, 6vw, 4rem); font-weight: 1000; line-height: 0.9; margin-bottom: 20px; font-style: italic; }
+  .mission-sub { font-weight: 800; font-style: italic; color: #aaa; margin-top: 15px; }
+  .baan-overlay-container { position: fixed; z-index: 100000; transform: translate(-50%, -50%); pointer-events: none; }
+  .baan-img { width: 50vw; max-width: 700px; }
+
+  @keyframes baan-pop { 
+    0% { transform: scale(0.1) rotate(-10deg); opacity: 0; } 
+    30% { transform: scale(1.2) rotate(5deg); opacity: 1; } 
+    100% { transform: scale(1) rotate(0deg); opacity: 1; } 
+  }
+`;

@@ -114,8 +114,8 @@ export default function ProfessionalMakingEvolver() {
       <style dangerouslySetInnerHTML={{ __html: demoStyles }} />
       
       <nav className="fixed-nav">
-        <Link href="/about">
-          <div className="back-btn">← ABOUTに戻る</div>
+        <Link href="/">
+          <div className="back-btn">← TOPに戻る</div>
         </Link>
       </nav>
 
@@ -133,7 +133,14 @@ export default function ProfessionalMakingEvolver() {
           <div className="demo-controls">
             <div className="control-text">
               <h2 className="panel-sub-title">イラストを解体・逆算する</h2>
-              <p>完成したイラストから線画と塗りを分離しています。数学的アプローチによるメイキングの自動生成を体験してください。</p>
+              <p>完成したイラストから線画と塗りを分離しています。<br />
+                まず、線画を抽出。<br />
+                
+                イラストレーターの塗り方を最初から再現するために暗い色を取り除き,
+                近傍の明るい色で平坦化します（下塗り）。<br />
+                その上に元の暗い色をのせ（影を乗せる作業）。<br />
+                ハイライトを乗せました。<br />
+                メイキングの再現生成を体験してください。</p>
             </div>
             <label className="upload-label">
               画像を選択する
@@ -184,7 +191,7 @@ export default function ProfessionalMakingEvolver() {
             <div className="panel-content">
               <h3 className="section-title" style={{ color: '#fff' }}>覚悟の証明</h3>
               <p className="text-sm" style={{ color: '#fff' }}>
-                自力で完納した約450万円の学費という数字には、私の信念が込められています。この数字は、私が目標から逃げない、そしてクリエイターを支え抜く覚悟の重さであると考えています。
+                自力で完納した約450万円の学費という数字には、私の「何があっても絶対に折れない」という信念が込められています。また多額の奨学金を抱えています。この金額は、私が目標から逃げない、そしてクリエイターを支え抜く覚悟の重さであると考えています。
               </p>
             </div>
           </section>
