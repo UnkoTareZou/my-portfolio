@@ -1,12 +1,24 @@
 "use client";
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import React from 'react';
+// appフォルダ直下にあるcomic-list.jsonを読み込みます
+import comicImages from '../comic-list.json';
 
 export default function ProfessionalMakingEvolver() {
   const [refImg, setRefImg] = useState<string | null>(null);
   const canvasRefs = Array.from({ length: 7 }, () => useRef<HTMLCanvasElement>(null));
+
+  // public/comicフォルダ内の画像リストを生成します
+  const illustrationList = useMemo(() => {
+    if (!comicImages || comicImages.length === 0) return [];
+    return comicImages.filter(file => 
+      file.toLowerCase().endsWith('.jpg') || 
+      file.toLowerCase().endsWith('.png') || 
+      file.toLowerCase().endsWith('.jpeg')
+    );
+  }, []);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -16,7 +28,6 @@ export default function ProfessionalMakingEvolver() {
     reader.readAsDataURL(file);
   };
 
-  // 高度なエッジ抽出：空間フィルタリングの実装
   const extractLines = (ctx: CanvasRenderingContext2D, w: number, h: number, img: HTMLImageElement) => {
     ctx.drawImage(img, 0, 0);
     const src = ctx.getImageData(0, 0, w, h);
@@ -117,13 +128,12 @@ export default function ProfessionalMakingEvolver() {
           </div>
         </header>
 
-        {/* パネル1: ライブデモ */}
         <section className="manga-panel demo-panel">
           <div className="panel-badge">01. LIVE DEMO</div>
           <div className="demo-controls">
             <div className="control-text">
               <h2 className="panel-sub-title">イラストを解体・逆算する</h2>
-              <p>完成したイラストから「線画」と「塗り」を分離。数学的アプローチによるメイキングの自動生成を体験してください。</p>
+              <p>完成したイラストから線画と塗りを分離しています。数学的アプローチによるメイキングの自動生成を体験してください。</p>
             </div>
             <label className="upload-label">
               画像を選択する
@@ -149,20 +159,19 @@ export default function ProfessionalMakingEvolver() {
             ) : (
               <div className="waiting-box">
                 <p>Waiting for Artwork...</p>
-                <span>ここにイラストをドラッグまたは選択</span>
+                <span>ここにイラストをドラッグまたは選択してください</span>
               </div>
             )}
           </div>
         </section>
 
-        {/* パネル2: 技術背景 */}
         <div className="dual-grid">
           <section className="manga-panel link-panel-style">
             <div className="panel-badge">02. TECHNOLOGY</div>
             <div className="panel-content">
               <h3 className="section-title">符号理論の応用</h3>
               <p className="text-sm">
-                卒業研究で扱っている「しきい値判定」の考え方をイラストの輝度ベースのレイヤー分離に応用。数理モデルを実装し、客観的にメイキングを証明するプロセスは私のエンジニアリングの根幹です。
+                卒業研究で扱っているしきい値判定の考え方を画像解析へ応用しています。数理モデルを実装し、客観的にメイキングを証明するプロセスは私のエンジニアリングの根幹となっています。
               </p>
               <Link href="/development">
                 <div className="tech-link-btn">技術解剖・ソースコード解説 →</div>
@@ -175,14 +184,32 @@ export default function ProfessionalMakingEvolver() {
             <div className="panel-content">
               <h3 className="section-title" style={{ color: '#fff' }}>覚悟の証明</h3>
               <p className="text-sm" style={{ color: '#fff' }}>
-                自力で完納した約450万円の学費。この数字は、私が目標から逃げない、そしてクリエイターを支え抜く覚悟の重さです。どのような環境でも、私はやり通します。
+                自力で完納した約450万円の学費という数字には、私の信念が込められています。この数字は、私が目標から逃げない、そしてクリエイターを支え抜く覚悟の重さであると考えています。
               </p>
             </div>
           </section>
         </div>
+
+        <section className="manga-panel gallery-panel">
+          <div className="panel-badge">04. PORTFOLIO / ILLUSTRATIONS</div>
+          <div className="gallery-header">
+            <h2 className="panel-sub-title">今までの制作物</h2>
+            <p className="gallery-desc">作品ライブラリから自動的に読み込んでいます。画像にホバーすると拡大して確認できます。</p>
+          </div>
+          <div className="illust-grid">
+            {illustrationList.map((fileName, index) => (
+              <div key={index} className="illust-card">
+                <div className="illust-frame">
+                  <img src={"/comic/" + fileName} alt={fileName} className="illust-img" />
+                </div>
+                <p className="illust-title">{fileName}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </main>
   );
 }
 
-const demoStyles = " .demo-manga-container { background-color: #f0f0f0; min-height: 100vh; padding: 60px 20px; background-image: radial-gradient(#ccc 1.5px, transparent 1.5px); background-size: 25px 25px; font-family: sans-serif; } .fixed-nav { position: fixed; top: 20px; left: 20px; z-index: 1000; } .back-btn { background: white; border: 4px solid black; padding: 10px 20px; font-weight: 900; box-shadow: 5px 5px 0px black; cursor: pointer; transition: 0.2s; } .back-btn:hover { background: black; color: white; } .manga-wrapper { max-width: 1100px; margin: 0 auto; } .page-header { border-bottom: 10px solid black; margin-bottom: 40px; padding-bottom: 10px; } .kicker { font-weight: 900; color: #e63946; font-size: 0.8rem; } .main-title { font-size: clamp(2rem, 5vw, 4rem); font-weight: 1000; letter-spacing: -2px; line-height: 1; } .header-info { font-weight: 800; color: #666; margin-top: 10px; } .manga-panel { background: white; border: 8px solid black; box-shadow: 15px 15px 0px black; position: relative; padding: 40px; margin-bottom: 40px; } .panel-badge { position: absolute; top: 0; left: 0; background: black; color: white; padding: 5px 15px; font-weight: 900; font-size: 0.8rem; } .demo-controls { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; flex-wrap: wrap; gap: 20px; } .panel-sub-title { font-size: 1.5rem; font-weight: 900; border-bottom: 4px solid black; display: inline-block; margin-bottom: 10px; } .upload-label { background: #e63946; color: white; padding: 15px 30px; font-weight: 900; cursor: pointer; border: 4px solid black; box-shadow: 5px 5px 0px black; } .upload-label:hover { background: #000; } .canvas-scroll-area { overflow-x: auto; padding-bottom: 20px; } .canvas-grid { display: flex; gap: 20px; } .canvas-card { flex-shrink: 0; width: 280px; } .canvas-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 900; font-size: 0.7rem; } .step-num { background: black; color: white; padding: 2px 8px; } .canvas-frame { border: 4px solid black; background: #eee; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; } canvas { max-width: 100%; max-height: 100%; object-contain: contain; } .waiting-box { height: 300px; border: 6px dashed #ccc; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #ccc; font-weight: 900; text-transform: uppercase; } .dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; } @media (max-width: 850px) { .dual-grid { grid-template-columns: 1fr; } } .section-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 15px; text-decoration: underline; } .tech-link-btn { background: #000; color: #fff; padding: 12px; text-align: center; font-weight: 900; margin-top: 20px; transition: 0.2s; } .tech-link-btn:hover { background: #e63946; } .dark-panel { background: #000; border-color: #000; } ";
+const demoStyles = " .demo-manga-container { background-color: #f0f0f0; min-height: 100vh; padding: 60px 20px; background-image: radial-gradient(#ccc 1.5px, transparent 1.5px); background-size: 25px 25px; font-family: sans-serif; } .fixed-nav { position: fixed; top: 20px; left: 20px; z-index: 1000; } .back-btn { background: white; border: 4px solid black; padding: 10px 20px; font-weight: 900; box-shadow: 5px 5px 0px black; cursor: pointer; transition: 0.2s; } .back-btn:hover { background: black; color: white; } .manga-wrapper { max-width: 1100px; margin: 0 auto; } .page-header { border-bottom: 10px solid black; margin-bottom: 40px; padding-bottom: 10px; } .kicker { font-weight: 900; color: #e63946; font-size: 0.8rem; } .main-title { font-size: clamp(2rem, 5vw, 4rem); font-weight: 1000; letter-spacing: -2px; line-height: 1; } .header-info { font-weight: 800; color: #666; margin-top: 10px; } .manga-panel { background: white; border: 8px solid black; box-shadow: 15px 15px 0px black; position: relative; padding: 40px; margin-bottom: 40px; } .panel-badge { position: absolute; top: 0; left: 0; background: black; color: white; padding: 5px 15px; font-weight: 900; font-size: 0.8rem; } .demo-controls { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; flex-wrap: wrap; gap: 20px; } .panel-sub-title { font-size: 1.5rem; font-weight: 900; border-bottom: 4px solid black; display: inline-block; margin-bottom: 15px; } .upload-label { background: #e63946; color: white; padding: 15px 30px; font-weight: 900; cursor: pointer; border: 4px solid black; box-shadow: 5px 5px 0px black; } .upload-label:hover { background: #000; } .canvas-scroll-area { overflow-x: auto; padding-bottom: 20px; } .canvas-grid { display: flex; gap: 20px; } .canvas-card { flex-shrink: 0; width: 280px; } .canvas-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 900; font-size: 0.7rem; } .step-num { background: black; color: white; padding: 2px 8px; } .canvas-frame { border: 4px solid black; background: #eee; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; } canvas { max-width: 100%; max-height: 100%; object-fit: contain; } .waiting-box { height: 300px; border: 6px dashed #ccc; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #ccc; font-weight: 900; text-transform: uppercase; } .dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; } .gallery-header { margin-bottom: 30px; } .gallery-desc { font-weight: 700; font-size: 0.85rem; color: #666; } .illust-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; } .illust-card { transform: rotate(-1deg); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); } .illust-card:nth-child(even) { transform: rotate(1.5deg); } .illust-card:hover { transform: scale(1.05) rotate(0deg); z-index: 10; box-shadow: 20px 20px 0px black; } .illust-frame { border: 6px solid black; background: white; box-shadow: 10px 10px 0px black; overflow: hidden; aspect-ratio: 1; } .illust-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; } .illust-card:hover .illust-img { transform: scale(1.15); } .illust-title { margin-top: 15px; font-weight: 900; text-align: center; font-size: 0.9rem; word-break: break-all; } @media (max-width: 850px) { .dual-grid { grid-template-columns: 1fr; } } .section-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 15px; text-decoration: underline; } .tech-link-btn { background: #000; color: #fff; padding: 12px; text-align: center; font-weight: 900; margin-top: 20px; transition: 0.2s; } .tech-link-btn:hover { background: #e63946; } .dark-panel { background: #000; border-color: #000; } ";
