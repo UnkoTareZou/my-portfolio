@@ -9,8 +9,8 @@ export default function CareerVisionPage() {
       <style dangerouslySetInnerHTML={{ __html: careerStyles }} />
       
       <nav className="fixed-nav">
-        <Link href="/about">
-          <div className="back-btn">← ABOUTに戻る</div>
+        <Link href="/">
+          <div className="back-btn">← TOPに戻る</div>
         </Link>
       </nav>
 
