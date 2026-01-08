@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import React from 'react';
 
 export default function ProfessionalMakingEvolver() {
   const [refImg, setRefImg] = useState<string | null>(null);
@@ -15,7 +16,7 @@ export default function ProfessionalMakingEvolver() {
     reader.readAsDataURL(file);
   };
 
-  // --- 高度なエッジ抽出（線画化）：空間フィルタリングの実装 ---
+  // 高度なエッジ抽出：空間フィルタリングの実装
   const extractLines = (ctx: CanvasRenderingContext2D, w: number, h: number, img: HTMLImageElement) => {
     ctx.drawImage(img, 0, 0);
     const src = ctx.getImageData(0, 0, w, h);
@@ -23,7 +24,6 @@ export default function ProfessionalMakingEvolver() {
     const s = src.data;
     const d = dst.data;
     
-    // ラプラシアンカーネル（二次微分フィルタ）による輪郭抽出
     const kernel = [0, 1, 0, 1, -4, 1, 0, 1, 0];
     for (let y = 1; y < h - 1; y++) {
       for (let x = 1; x < w - 1; x++) {
@@ -31,7 +31,6 @@ export default function ProfessionalMakingEvolver() {
         for (let ky = -1; ky <= 1; ky++) {
           for (let kx = -1; kx <= 1; kx++) {
             const idx = ((y + ky) * w + (x + kx)) * 4;
-            // 輝度(Y)の算出
             const avg = (s[idx] * 0.299 + s[idx+1] * 0.587 + s[idx+2] * 0.114);
             val += avg * kernel[(ky+1)*3 + (kx+1)];
           }
@@ -62,7 +61,6 @@ export default function ProfessionalMakingEvolver() {
       ctx.drawImage(img, 0, 0);
       const imageData = ctx.getImageData(0, 0, w, h);
       const data = imageData.data;
-      // 符号理論のしきい値判定を応用
       const thresholds = [0, 230, 195, 160, 125, 80, 0];
       const T = thresholds[stepIdx];
 
@@ -81,7 +79,7 @@ export default function ProfessionalMakingEvolver() {
 
       if (stepIdx < 6) {
         ctx.globalCompositeOperation = 'multiply';
-        ctx.filter = `blur(${Math.max(0, 5 - stepIdx)}px) contrast(1.1)`;
+        ctx.filter = "blur(" + Math.max(0, 5 - stepIdx) + "px) contrast(1.1)";
         ctx.drawImage(canvas, 0, 0);
         ctx.filter = 'none';
         ctx.globalCompositeOperation = 'source-over';
@@ -96,102 +94,95 @@ export default function ProfessionalMakingEvolver() {
   }, [refImg]);
 
   const stepLabels = [
-    "01. 主線（エッジ抽出）", "02. 下塗り（環境光）", "03. 固有色の重なり",
-    "04. 乗算（一影）", "05. 濃色（二影）", "06. スクリーン（光）", "07. 完成"
+    "01. 主線抽出", "02. 下塗り", "03. 固有色",
+    "04. 一影", "05. 二影", "06. 光", "07. 完成"
   ];
 
   return (
-    <main className="p-8 min-h-screen bg-white text-black font-sans max-w-6xl mx-auto">
-      <style dangerouslySetInnerHTML={{ __html: `body { background-color: #f8f8f8 !important; }` }} />
+    <main className="demo-manga-container">
+      <style dangerouslySetInnerHTML={{ __html: demoStyles }} />
       
-      <div className="flex justify-between items-end border-b-8 border-black pb-4 mb-12">
-        <Link href="/" className="font-black border-2 border-black px-4 py-1 hover:bg-black hover:text-white transition-all no-underline text-sm uppercase">← TOP</Link>
-        <div className="text-right">
-          <p className="text-xs font-bold text-gray-500">PROJECT / REVERSE MAKING SYSTEM</p>
-          <h1 className="text-3xl font-black italic uppercase tracking-tighter">Reverse Making System</h1>
+      <nav className="fixed-nav">
+        <Link href="/about">
+          <div className="back-btn">← ABOUTに戻る</div>
+        </Link>
+      </nav>
+
+      <div className="manga-wrapper">
+        <header className="page-header">
+          <p className="kicker">SYSTEM DEMO / REVERSE MAKING</p>
+          <h1 className="main-title">Reverse Making System</h1>
+          <div className="header-info">
+            <span>応用数理研究室 / 中野 恭輔</span>
+          </div>
+        </header>
+
+        {/* パネル1: ライブデモ */}
+        <section className="manga-panel demo-panel">
+          <div className="panel-badge">01. LIVE DEMO</div>
+          <div className="demo-controls">
+            <div className="control-text">
+              <h2 className="panel-sub-title">イラストを解体・逆算する</h2>
+              <p>完成したイラストから「線画」と「塗り」を分離。数学的アプローチによるメイキングの自動生成を体験してください。</p>
+            </div>
+            <label className="upload-label">
+              画像を選択する
+              <input type="file" accept="image/*" onChange={handleUpload} style={{ display: 'none' }} />
+            </label>
+          </div>
+
+          <div className="canvas-scroll-area">
+            {refImg ? (
+              <div className="canvas-grid">
+                {canvasRefs.map((ref, i) => (
+                  <div key={i} className="canvas-card">
+                    <div className="canvas-info">
+                      <span className="step-num">STEP {i + 1}</span>
+                      <span className="step-label">{stepLabels[i]}</span>
+                    </div>
+                    <div className="canvas-frame">
+                      <canvas ref={ref} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="waiting-box">
+                <p>Waiting for Artwork...</p>
+                <span>ここにイラストをドラッグまたは選択</span>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* パネル2: 技術背景 */}
+        <div className="dual-grid">
+          <section className="manga-panel link-panel-style">
+            <div className="panel-badge">02. TECHNOLOGY</div>
+            <div className="panel-content">
+              <h3 className="section-title">符号理論の応用</h3>
+              <p className="text-sm">
+                卒業研究で扱っている「しきい値判定」の考え方をイラストの輝度ベースのレイヤー分離に応用。数理モデルを実装し、客観的にメイキングを証明するプロセスは私のエンジニアリングの根幹です。
+              </p>
+              <Link href="/development">
+                <div className="tech-link-btn">技術解剖・ソースコード解説 →</div>
+              </Link>
+            </div>
+          </section>
+
+          <section className="manga-panel dark-panel">
+            <div className="panel-badge" style={{ background: '#e63946' }}>03. DETERMINATION</div>
+            <div className="panel-content">
+              <h3 className="section-title" style={{ color: '#fff' }}>覚悟の証明</h3>
+              <p className="text-sm" style={{ color: '#fff' }}>
+                自力で完納した約450万円の学費。この数字は、私が目標から逃げない、そしてクリエイターを支え抜く覚悟の重さです。どのような環境でも、私はやり通します。
+              </p>
+            </div>
+          </section>
         </div>
       </div>
-
-      <section className="mb-16 bg-white border-4 border-black p-8 shadow-[12px_12px_0px_black]">
-        <div className="mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="max-w-md">
-            <h2 className="text-xl font-black mb-2 uppercase underline">Live Demo</h2>
-            <p className="text-sm font-bold leading-relaxed">
-              完成したイラストから「線画」と「塗り」を分離・解析します。数学的なアプローチによる制作工程の逆算ツールです。
-            </p>
-          </div>
-          <input type="file" accept="image/*" onChange={handleUpload} className="text-xs font-bold border-2 border-black p-2 bg-gray-50 cursor-pointer" />
-        </div>
-
-        {refImg ? (
-          <div className="flex gap-6 overflow-x-auto pb-6 snap-x">
-            {canvasRefs.map((ref, i) => (
-              <div key={i} className="flex-shrink-0 w-72 md:w-80 snap-center">
-                <div className="mb-2 flex items-center justify-between px-1">
-                  <span className={`text-[10px] font-black px-2 py-0.5 rounded ${i === 6 ? 'bg-red-600 text-white' : 'bg-black text-white'}`}>
-                    STEP {i + 1}
-                  </span>
-                  <p className="text-[10px] font-bold text-gray-500">{stepLabels[i]}</p>
-                </div>
-                <div className="border-4 border-black rounded-xl overflow-hidden bg-white shadow-lg aspect-[3/4] flex items-center justify-center">
-                  <canvas ref={ref} className="max-w-full max-h-full object-contain" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="h-64 flex flex-col items-center justify-center border-4 border-dashed border-gray-200 rounded-3xl">
-            <p className="text-gray-400 font-black animate-pulse uppercase">Waiting for Artwork...</p>
-          </div>
-        )}
-      </section>
-
-      <section className="grid md:grid-cols-2 gap-12 mb-20">
-        <div className="space-y-6">
-          <h2 className="text-2xl font-black border-l-8 border-black pl-4 uppercase">技術的な背景</h2>
-          <div className="p-6 bg-gray-100 border-2 border-black rounded-xl">
-            <h3 className="font-black mb-2 underline">Pythonからのポーティング</h3>
-            <p className="text-sm font-bold leading-relaxed mb-4">
-              元々は行列演算に強いPython(NumPy)でプロトタイプを開発しました。
-              Web上で誰でも即座に体験可能にするため、AIのサポートを受けつつJavaScript(Canvas API)へ移植を行いました。
-            </p>
-            <Link href="/development">
-              <div className="bg-black text-white p-4 font-black text-center shadow-[6px_6px_0px_#e63946] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer text-xs uppercase">
-                技術解剖（ソースコード解説）を見る →
-              </div>
-            </Link>
-          </div>
-          <div className="p-6 bg-gray-100 border-2 border-black rounded-xl">
-            <h3 className="font-black mb-2 underline">符号理論の応用</h3>
-            <p className="text-sm font-bold leading-relaxed">
-              卒業研究で扱っている「しきい値判定による通信路変換」の考え方を、イラストの輝度ベースのレイヤー分離に応用しました。数理モデルを実装し、客観的に証明するプロセスは私のエンジニアリングの根幹です。
-            </p>
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <h2 className="text-2xl font-black border-l-8 border-red-600 pl-4 uppercase">覚悟の証明</h2>
-          <div className="p-6 bg-black text-white rounded-xl shadow-[10px_10px_0px_#e63946]">
-            <p className="text-sm font-bold leading-loose">
-              私は技術を用いて創作を支えたいと考えています。
-              自力で完納した約450万円の学費と、現在も背負っている多額の奨学金。
-              この数字は、私が目標から逃げない、そしてクリエイターを支え抜く覚悟の重さです。
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="text-[10px] font-black uppercase text-gray-500 text-center">数学的基盤：ラプラシアンカーネル</p>
-            <div className="bg-white p-4 border-2 border-black font-mono text-center text-lg flex justify-center items-center gap-4">
-              <span className="text-3xl font-light">[</span>
-              <div className="grid grid-cols-3 gap-x-6 gap-y-2">
-                <span>0</span><span>1</span><span>0</span>
-                <span>1</span><span className="text-red-600 font-bold">-4</span><span>1</span>
-                <span>0</span><span>1</span><span>0</span>
-              </div>
-              <span className="text-3xl font-light">]</span>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }
+
+const demoStyles = " .demo-manga-container { background-color: #f0f0f0; min-height: 100vh; padding: 60px 20px; background-image: radial-gradient(#ccc 1.5px, transparent 1.5px); background-size: 25px 25px; font-family: sans-serif; } .fixed-nav { position: fixed; top: 20px; left: 20px; z-index: 1000; } .back-btn { background: white; border: 4px solid black; padding: 10px 20px; font-weight: 900; box-shadow: 5px 5px 0px black; cursor: pointer; transition: 0.2s; } .back-btn:hover { background: black; color: white; } .manga-wrapper { max-width: 1100px; margin: 0 auto; } .page-header { border-bottom: 10px solid black; margin-bottom: 40px; padding-bottom: 10px; } .kicker { font-weight: 900; color: #e63946; font-size: 0.8rem; } .main-title { font-size: clamp(2rem, 5vw, 4rem); font-weight: 1000; letter-spacing: -2px; line-height: 1; } .header-info { font-weight: 800; color: #666; margin-top: 10px; } .manga-panel { background: white; border: 8px solid black; box-shadow: 15px 15px 0px black; position: relative; padding: 40px; margin-bottom: 40px; } .panel-badge { position: absolute; top: 0; left: 0; background: black; color: white; padding: 5px 15px; font-weight: 900; font-size: 0.8rem; } .demo-controls { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; flex-wrap: wrap; gap: 20px; } .panel-sub-title { font-size: 1.5rem; font-weight: 900; border-bottom: 4px solid black; display: inline-block; margin-bottom: 10px; } .upload-label { background: #e63946; color: white; padding: 15px 30px; font-weight: 900; cursor: pointer; border: 4px solid black; box-shadow: 5px 5px 0px black; } .upload-label:hover { background: #000; } .canvas-scroll-area { overflow-x: auto; padding-bottom: 20px; } .canvas-grid { display: flex; gap: 20px; } .canvas-card { flex-shrink: 0; width: 280px; } .canvas-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 900; font-size: 0.7rem; } .step-num { background: black; color: white; padding: 2px 8px; } .canvas-frame { border: 4px solid black; background: #eee; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; } canvas { max-width: 100%; max-height: 100%; object-contain: contain; } .waiting-box { height: 300px; border: 6px dashed #ccc; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #ccc; font-weight: 900; text-transform: uppercase; } .dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; } @media (max-width: 850px) { .dual-grid { grid-template-columns: 1fr; } } .section-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 15px; text-decoration: underline; } .tech-link-btn { background: #000; color: #fff; padding: 12px; text-align: center; font-weight: 900; margin-top: 20px; transition: 0.2s; } .tech-link-btn:hover { background: #e63946; } .dark-panel { background: #000; border-color: #000; } ";

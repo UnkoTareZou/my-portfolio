@@ -39,7 +39,7 @@ export default function AboutPage() {
         {/* --- 01. IDENTITY：動画と支える決意 --- */}
         <section className="manga-panel area-identity">
           <div className="panel-header-badge">01. IDENTITY</div>
-          <h1 className="main-passion-title">LOVE CELSYS</h1>
+          <h1 className="main-passion-title">自己紹介VIDEO</h1>
           <div className="video-wrapper">
             <iframe 
               width="100%" height="100%" 
