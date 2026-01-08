@@ -15,7 +15,7 @@ export default function ProfessionalMakingEvolver() {
     reader.readAsDataURL(file);
   };
 
-  // --- 高度なエッジ抽出（線画化） ---
+  // --- 高度なエッジ抽出（線画化）：空間フィルタリングの実装 ---
   const extractLines = (ctx: CanvasRenderingContext2D, w: number, h: number, img: HTMLImageElement) => {
     ctx.drawImage(img, 0, 0);
     const src = ctx.getImageData(0, 0, w, h);
@@ -23,7 +23,7 @@ export default function ProfessionalMakingEvolver() {
     const s = src.data;
     const d = dst.data;
     
-    // ラプラシアンカーネルによるエッジ検出
+    // ラプラシアンカーネル（二次微分フィルタ）による輪郭抽出
     const kernel = [0, 1, 0, 1, -4, 1, 0, 1, 0];
     for (let y = 1; y < h - 1; y++) {
       for (let x = 1; x < w - 1; x++) {
@@ -31,11 +31,12 @@ export default function ProfessionalMakingEvolver() {
         for (let ky = -1; ky <= 1; ky++) {
           for (let kx = -1; kx <= 1; kx++) {
             const idx = ((y + ky) * w + (x + kx)) * 4;
-            const avg = (s[idx] + s[idx+1] + s[idx+2]) / 3;
+            // 輝度(Y)の算出
+            const avg = (s[idx] * 0.299 + s[idx+1] * 0.587 + s[idx+2] * 0.114);
             val += avg * kernel[(ky+1)*3 + (kx+1)];
           }
         }
-        const edge = 255 - Math.abs(val) * 3; // 線を黒く、背景を白に
+        const edge = 255 - Math.abs(val) * 3;
         const o = (y * w + x) * 4;
         d[o] = d[o+1] = d[o+2] = edge; d[o+3] = 255;
       }
@@ -61,13 +62,12 @@ export default function ProfessionalMakingEvolver() {
       ctx.drawImage(img, 0, 0);
       const imageData = ctx.getImageData(0, 0, w, h);
       const data = imageData.data;
-      const thresholds = [0, 230, 195, 160, 125, 80, 0]; // 輝度しきい値
+      // 符号理論のしきい値判定を応用
+      const thresholds = [0, 230, 195, 160, 125, 80, 0];
       const T = thresholds[stepIdx];
 
       for (let i = 0; i < data.length; i += 4) {
         const lum = 0.299*data[i] + 0.587*data[i+1] + 0.114*data[i+2];
-        
-        // 色の補完：しきい値付近を滑らかに繋ぐ（にじみ処理）
         if (lum < T) {
           data[i] = 255; data[i+1] = 255; data[i+2] = 255;
         } else if (lum < T + 15) {
@@ -79,7 +79,6 @@ export default function ProfessionalMakingEvolver() {
       }
       ctx.putImageData(imageData, 0, 0);
 
-      // レイヤーの重ね合わせ感を出すためのフィルタリング
       if (stepIdx < 6) {
         ctx.globalCompositeOperation = 'multiply';
         ctx.filter = `blur(${Math.max(0, 5 - stepIdx)}px) contrast(1.1)`;
@@ -102,21 +101,30 @@ export default function ProfessionalMakingEvolver() {
   ];
 
   return (
-    <main className="p-4 min-h-screen bg-white text-black font-sans overflow-x-hidden">
-      <style dangerouslySetInnerHTML={{ __html: `body { background-color: white !important; }` }} />
-      <div className="flex justify-between items-center mb-6">
-        <Link href="/" className="font-black border-b-2 border-black no-underline uppercase text-xs">← HOME</Link>
-        <h1 className="text-xl font-black italic uppercase tracking-tighter">Reverse Making System</h1>
+    <main className="p-8 min-h-screen bg-white text-black font-sans max-w-6xl mx-auto">
+      <style dangerouslySetInnerHTML={{ __html: `body { background-color: #f8f8f8 !important; }` }} />
+      
+      <div className="flex justify-between items-end border-b-8 border-black pb-4 mb-12">
+        <Link href="/" className="font-black border-2 border-black px-4 py-1 hover:bg-black hover:text-white transition-all no-underline text-sm uppercase">← TOP</Link>
+        <div className="text-right">
+          <p className="text-xs font-bold text-gray-500">PROJECT / REVERSE MAKING SYSTEM</p>
+          <h1 className="text-3xl font-black italic uppercase tracking-tighter">Reverse Making System</h1>
+        </div>
       </div>
 
-      <div className="w-full mx-auto">
-        <div className="mb-8 bg-gray-50 p-6 rounded-2xl border-2 border-black flex items-center justify-between">
-          <p className="font-black uppercase text-sm">解析用イラストをアップロード：</p>
-          <input type="file" accept="image/*" onChange={handleUpload} className="text-xs font-bold border border-black p-1 rounded bg-white" />
+      <section className="mb-16 bg-white border-4 border-black p-8 shadow-[12px_12px_0px_black]">
+        <div className="mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="max-w-md">
+            <h2 className="text-xl font-black mb-2 uppercase underline">Live Demo</h2>
+            <p className="text-sm font-bold leading-relaxed">
+              完成したイラストから「線画」と「塗り」を分離・解析します。数学的なアプローチによる制作工程の逆算ツールです。
+            </p>
+          </div>
+          <input type="file" accept="image/*" onChange={handleUpload} className="text-xs font-bold border-2 border-black p-2 bg-gray-50 cursor-pointer" />
         </div>
 
-        {refImg && (
-          <div className="flex gap-4 overflow-x-auto pb-6 snap-x">
+        {refImg ? (
+          <div className="flex gap-6 overflow-x-auto pb-6 snap-x">
             {canvasRefs.map((ref, i) => (
               <div key={i} className="flex-shrink-0 w-72 md:w-80 snap-center">
                 <div className="mb-2 flex items-center justify-between px-1">
@@ -125,37 +133,65 @@ export default function ProfessionalMakingEvolver() {
                   </span>
                   <p className="text-[10px] font-bold text-gray-500">{stepLabels[i]}</p>
                 </div>
-                <div className="border-4 border-black rounded-xl overflow-hidden bg-white shadow-lg relative aspect-[3/4] flex items-center justify-center">
+                <div className="border-4 border-black rounded-xl overflow-hidden bg-white shadow-lg aspect-[3/4] flex items-center justify-center">
                   <canvas ref={ref} className="max-w-full max-h-full object-contain" />
                 </div>
               </div>
             ))}
           </div>
-        )}
-
-        {!refImg && (
-          <div className="h-96 flex flex-col items-center justify-center border-4 border-dashed border-gray-200 rounded-3xl">
+        ) : (
+          <div className="h-64 flex flex-col items-center justify-center border-4 border-dashed border-gray-200 rounded-3xl">
             <p className="text-gray-400 font-black animate-pulse uppercase">Waiting for Artwork...</p>
           </div>
         )}
-      </div>
+      </section>
 
-      <footer className="mt-8 border-t-4 border-black pt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-[11px] leading-relaxed">
-        <div>
-          <h3 className="font-black uppercase mb-1">空間フィルタリングによる線画抽出</h3>
-          <p className="text-gray-600 font-bold">
-            ラプラシアンカーネルを用いた2次元畳み込み演算により、画像の周波数成分を解析。
-            デジタルイラストの主線を数学的に分離し、制作の始点となる「線画レイヤー」を再構築します。
-          </p>
+      <section className="grid md:grid-cols-2 gap-12 mb-20">
+        <div className="space-y-6">
+          <h2 className="text-2xl font-black border-l-8 border-black pl-4 uppercase">技術的な背景</h2>
+          <div className="p-6 bg-gray-100 border-2 border-black rounded-xl">
+            <h3 className="font-black mb-2 underline">Pythonからのポーティング</h3>
+            <p className="text-sm font-bold leading-relaxed mb-4">
+              元々は行列演算に強いPython(NumPy)でプロトタイプを開発しました。
+              Web上で誰でも即座に体験可能にするため、AIのサポートを受けつつJavaScript(Canvas API)へ移植を行いました。
+            </p>
+            <Link href="/development">
+              <div className="bg-black text-white p-4 font-black text-center shadow-[6px_6px_0px_#e63946] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer text-xs uppercase">
+                技術解剖（ソースコード解説）を見る →
+              </div>
+            </Link>
+          </div>
+          <div className="p-6 bg-gray-100 border-2 border-black rounded-xl">
+            <h3 className="font-black mb-2 underline">符号理論の応用</h3>
+            <p className="text-sm font-bold leading-relaxed">
+              卒業研究で扱っている「しきい値判定による通信路変換」の考え方を、イラストの輝度ベースのレイヤー分離に応用しました。数理モデルを実装し、客観的に証明するプロセスは私のエンジニアリングの根幹です。
+            </p>
+          </div>
         </div>
-        <div>
-          <h3 className="font-black uppercase mb-1">輝度勾配に基づくにじみ補完</h3>
-          <p className="text-gray-600 font-bold">
-            色の剥離境界において輝度勾配（Gradient）を計算し、線形補間（Linear Interpolation）を適用。
-            機械的な色分けを回避し、厚塗りや水彩のような筆の馴染みをシミュレートします。
-          </p>
+
+        <div className="space-y-6">
+          <h2 className="text-2xl font-black border-l-8 border-red-600 pl-4 uppercase">覚悟の証明</h2>
+          <div className="p-6 bg-black text-white rounded-xl shadow-[10px_10px_0px_#e63946]">
+            <p className="text-sm font-bold leading-loose">
+              私は技術を用いて創作を支えたいと考えています。
+              自力で完納した約450万円の学費と、現在も背負っている多額の奨学金。
+              この数字は、私が目標から逃げない、そしてクリエイターを支え抜く覚悟の重さです。
+            </p>
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="text-[10px] font-black uppercase text-gray-500 text-center">数学的基盤：ラプラシアンカーネル</p>
+            <div className="bg-white p-4 border-2 border-black font-mono text-center text-lg flex justify-center items-center gap-4">
+              <span className="text-3xl font-light">[</span>
+              <div className="grid grid-cols-3 gap-x-6 gap-y-2">
+                <span>0</span><span>1</span><span>0</span>
+                <span>1</span><span className="text-red-600 font-bold">-4</span><span>1</span>
+                <span>0</span><span>1</span><span>0</span>
+              </div>
+              <span className="text-3xl font-light">]</span>
+            </div>
+          </div>
         </div>
-      </footer>
+      </section>
     </main>
   );
 }
