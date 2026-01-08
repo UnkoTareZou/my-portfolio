@@ -80,7 +80,8 @@ export default function StudyDetailPage() {
                 </div>
               </div>
               <p className="course-summary">
-                これらの講義を通じて得た知識を土台に、ただコードを書く物理的な作業だけでなく、システムの裏側にある数理的な最適化や理論回景を考慮した開発を行うことができます。
+                これらの講義を通じて得た知識を土台に、コードを書くような物理的な作業だけでなく、座学で
+                システムの裏側にある数理的な最適化や理論回景を考慮した開発を行うことができます。
               </p>
             </div>
           </div>
@@ -91,8 +92,8 @@ export default function StudyDetailPage() {
           <div className="panel-inner">
             <h2 className="section-title">結論</h2>
             <p className="conclusion-text">
-              「泥臭く手を動かす実装力」と「理論に基づいた客観的分析」。
-              この両輪を回しながら、貴社の製品開発において技術的な課題を一つずつ突破していく覚悟です。
+              何度でも粘り強く手を動かす実装力と理論に基づいた客観的分析。
+              在学中に身に着けたこの研究に対する姿勢で、貴社の製品開発や課題解決に向けて、技術的な課題を一つずつ突破していく覚悟です。
             </p>
           </div>
         </section>
@@ -130,4 +131,4 @@ const studyStyles = `
   .course-summary { font-size: 0.9rem; font-style: italic; color: #666; margin-top: 20px; }
   
   @media (max-width: 600px) { .panel-inner { padding: 20px; } }
-`;
+`; 

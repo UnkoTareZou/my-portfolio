@@ -63,12 +63,12 @@ export default function MangaRandomTopPage() {
       </Link>
 
    {/* 根性コマ：希望職種サイトへのリンクへ進化 */}
-<Link href="/careere" className="area-grit" style={{ textDecoration: 'none' }}>
+<Link href="/career" className="area-grit" style={{ textDecoration: 'none' }}>
   <div className="manga-panel branch-btn" style={{ transform: 'rotate(0.5deg)', backgroundColor: 'black', color: 'white', height: '100%' }}>
     <div className="grit-content">
       <div className="grit-sub">希望職種</div>
-      <div className="grit-main">4.私が出来ること<br/>For creator</div>
-      <div className="details-btn" >click here →</div>
+      <div className="grit-main">わたくしが<br/>PROJECT LEADER</div>
+      <div className="details-btn" style={{ background: 'white', color: 'black' }}>GO TO GOAL →</div>
     </div>
   </div>
 </Link>
