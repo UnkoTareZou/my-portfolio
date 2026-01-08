@@ -63,7 +63,7 @@ export default function MangaRandomTopPage() {
       </Link>
 
    {/* 根性コマ：希望職種サイトへのリンクへ進化 */}
-<Link href="/career" className="area-grit" style={{ textDecoration: 'none' }}>
+<Link href="/careere" className="area-grit" style={{ textDecoration: 'none' }}>
   <div className="manga-panel branch-btn" style={{ transform: 'rotate(0.5deg)', backgroundColor: 'black', color: 'white', height: '100%' }}>
     <div className="grit-content">
       <div className="grit-sub">希望職種</div>
