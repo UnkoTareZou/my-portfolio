@@ -4,8 +4,8 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import React from 'react';
 // appフォルダ直下にあるcomic-list.jsonを読み込みます
-import comicImages from '../comic-list.json';
-
+// @/ はプロジェクトのルート（通常は src または直下）を指すぜ
+import comicImages from '@/app/comic-list.json';
 export default function ProfessionalMakingEvolver() {
   const [refImg, setRefImg] = useState<string | null>(null);
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
