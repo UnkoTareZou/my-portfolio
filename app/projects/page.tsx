@@ -186,6 +186,7 @@ export default function ProfessionalMakingEvolver() {
             </div>
           </section>
 
+          {/*}
           <section className="manga-panel dark-panel">
             <div className="panel-badge" style={{ background: '#e63946' }}>03. DETERMINATION</div>
             <div className="panel-content">
@@ -194,7 +195,7 @@ export default function ProfessionalMakingEvolver() {
                 自力で完納した約450万円の学費という数字には、私の「何があっても絶対に折れない」という信念が込められています。また多額の奨学金を抱えています。この金額は、私が目標から逃げない、そしてクリエイターを支え抜く覚悟の重さであると考えています。
               </p>
             </div>
-          </section>
+          </section>*/}
         </div>
 
         <section className="manga-panel gallery-panel">
