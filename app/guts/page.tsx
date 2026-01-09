@@ -32,7 +32,7 @@ export default function GutsPage() {
         <span className="nav-title"></span>
       </nav>
 
-      {/* 右上固定ボタン：z-indexを上げて確実に一番上に配置します */}
+      {/* 右上固定ボタン */}
       <nav className="go_next_page_container">
         <Link href="/study">
           <div className="go_ext_page">大学で学んだこと一覧へ →</div>
@@ -108,7 +108,7 @@ export default function GutsPage() {
             <div className="report-text">
               <h3>【背景・プロセス：不動のメンタル】</h3>
               <p>
-                母は他界し、父親の生活保護受給という環境下、3年に渡る独学で大学進学を掴み取りました。4年間、深夜勤務と研究を一切の手抜きなく並行。2025年度には源泉徴収額210万円を記録しました。（図2）
+                母は他界し、父親の生活保護受給という環境下、3年に渡る独学で大学進学を掴み取りました。4年間、深夜勤務と研究を一切の手抜きなく並行. 2025年度には源泉徴収額210万円を記録しました。（図2）
               </p>
               
               <h3>【誠実さの物理的な証明】</h3>
@@ -172,55 +172,72 @@ const containerStyle: React.CSSProperties = {
 };
 
 const gutsFinalStyles = `
-  .sticky-nav { position: sticky; top: 0; background: rgba(255,255,255,0.98); border-bottom: 3px solid black; padding: 15px 40px; z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
-  .back-btn { font-weight: 900; color: black; border: 3px solid black; padding: 8px 20px; cursor: pointer; background: white; text-decoration: none; }
-  .nav-title { font-weight: 900; font-size: 1.1rem; }
+  .sticky-nav { position: sticky; top: 0; background: rgba(255,255,255,0.98); border-bottom: 3px solid black; padding: 15px 20px; z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
+  .back-btn { font-weight: 900; color: black; border: 3px solid black; padding: 6px 15px; cursor: pointer; background: white; text-decoration: none; font-size: 0.85rem; }
+  .nav-title { font-weight: 900; font-size: 0.9rem; }
 
-  /* 右上ボタンのコンテナ：z-indexを最強にしてsticky-navの上に乗せます */
-  .go_next_page_container { position: fixed; top: 12px; right: 20px; z-index: 2000; }
-  .go_ext_page { background: black; color: white; border: 3px solid black; padding: 10px 20px; font-weight: 900; cursor: pointer; text-decoration: none; transition: 0.2s; box-shadow: 4px 4px 0px #e63946; }
+  .go_next_page_container { position: fixed; top: 12px; right: 10px; z-index: 2000; }
+  .go_ext_page { background: black; color: white; border: 3px solid black; padding: 8px 12px; font-weight: 900; cursor: pointer; text-decoration: none; transition: 0.2s; box-shadow: 4px 4px 0px #e63946; font-size: 0.8rem; }
   .go_ext_page:hover { background: white; color: black; box-shadow: 0px 0px 0px black; transform: translate(2px, 2px); }
 
-  .report-container { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
-  .report-header { border-left: 15px solid black; padding-left: 30px; margin-bottom: 80px; }
-  .report-header h1 { font-size: 2.5rem; font-weight: 1000; line-height: 1.2; }
-  .summary-lead { font-size: 1.2rem; font-weight: 700; color: #555; line-height: 1.8; margin-top: 15px; }
+  .report-container { max-width: 1100px; margin: 40px auto; padding: 0 15px; }
+  .report-header { border-left: 10px solid black; padding-left: 20px; margin-bottom: 40px; }
+  .report-header h1 { font-size: 1.8rem; font-weight: 1000; line-height: 1.2; }
+  .summary-lead { font-size: 1rem; font-weight: 700; color: #555; line-height: 1.6; margin-top: 15px; }
 
-  .report-section { background: white; border: 3px solid black; padding: 50px; margin-bottom: 80px; box-shadow: 15px 15px 0px rgba(0,0,0,0.1); }
-  .section-manga-eye { border-bottom: 5px solid black; margin-bottom: 40px; padding-bottom: 20px; }
-  .chapter { background: black; color: white; padding: 4px 15px; font-weight: 900; }
-  .section-manga-eye h2 { font-size: 2rem; font-weight: 900; margin-top: 15px; }
+  .report-section { background: white; border: 3px solid black; padding: 25px; margin-bottom: 40px; box-shadow: 10px 10px 0px rgba(0,0,0,0.1); }
+  .section-manga-eye { border-bottom: 5px solid black; margin-bottom: 30px; padding-bottom: 15px; }
+  .chapter { background: black; color: white; padding: 4px 10px; font-weight: 900; font-size: 0.8rem; }
+  .section-manga-eye h2 { font-size: 1.4rem; font-weight: 900; margin-top: 15px; }
 
-  .report-content { display: flex; gap: 50px; align-items: flex-start; }
-  .report-content.reverse { flex-direction: row-reverse; }
-  .report-text { flex: 1.6; }
-  .report-text h3 { font-size: 1.2rem; font-weight: 900; margin-top: 30px; color: #e63946; border-bottom: 2px solid #e63946; display: inline-block; }
-  .report-text p, .report-text li { font-weight: 700; line-height: 2; color: #333; font-size: 1.05rem; }
+  .report-content { display: flex; flex-direction: column; gap: 30px; }
+  .report-text { width: 100%; }
+  .report-text h3 { font-size: 1.1rem; font-weight: 900; margin-top: 25px; color: #e63946; border-bottom: 2px solid #e63946; display: inline-block; }
+  .report-text p, .report-text li { font-weight: 700; line-height: 1.8; color: #333; font-size: 0.95rem; }
   
-  .result-box-highlight { background: #fff5f5; border: 4px solid #e63946; padding: 25px; margin-top: 30px; }
-  .result-box-highlight p { margin: 10px 0; font-weight: 800; color: #e63946; }
+  .result-box-highlight { background: #fff5f5; border: 3px solid #e63946; padding: 15px; margin-top: 25px; }
+  .result-box-highlight p { margin: 8px 0; font-weight: 800; color: #e63946; font-size: 0.9rem; }
 
-  .visual-column-emphasized { flex: 1; display: flex; flex-direction: column; gap: 40px; }
-  .report-visual { border: 5px solid black; padding: 10px; background: #fff; cursor: zoom-in; position: relative; }
+  .visual-column-emphasized { width: 100%; display: flex; flex-direction: column; gap: 30px; }
+  .report-visual { border: 4px solid black; padding: 8px; background: #fff; cursor: zoom-in; width: 100%; box-sizing: border-box; }
   
-  .shift-visual { max-width: 450px; margin-left: auto; }
-  .shift-visual img { width: 100%; height: auto; object-fit: contain; }
+  .shift-visual { max-width: 100%; }
+  .shift-visual img { width: 100%; height: auto; display: block; }
 
-  .gensen-impact { transform: scale(1.1); border: 12px solid #e63946 !important; z-index: 10; box-shadow: 20px 20px 0px rgba(230, 57, 70, 0.15); }
-  .gensen-impact img { width: 100%; height: auto; display: block; }
-  .impact-badge { position: absolute; top: -15px; right: -15px; background: #e63946; color: white; padding: 5px 20px; font-weight: 900; font-size: 1.3rem; transform: rotate(5deg); box-shadow: 5px 5px 0px black; }
+  .gensen-impact { border: 8px solid #e63946 !important; box-shadow: 10px 10px 0px rgba(230, 57, 70, 0.1); }
+  .impact-badge { position: absolute; top: -10px; right: -10px; background: #e63946; color: white; padding: 3px 12px; font-weight: 900; font-size: 1rem; transform: rotate(5deg); box-shadow: 3px 3px 0px black; }
 
-  .tuition-small { max-width: 350px; align-self: center; opacity: 0.9; }
-  .tuition-small img { width: 100%; height: auto; }
+  .tuition-small { max-width: 100%; }
+  .caption { font-size: 0.75rem; font-weight: 800; color: #666; margin-top: 8px; text-align: center; line-height: 1.4; }
 
-  .caption { font-size: 0.85rem; font-weight: 800; color: #666; margin-top: 10px; text-align: center; }
+  .report-footer { background: black; color: white; padding: 50px 20px; text-align: center; }
+  .value-grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 40px; text-align: left; }
+  .value-card { background: #1a1a1a; padding: 25px; border: 1px solid #e63946; }
+  .value-card h4 { color: #e63946; font-size: 1.1rem; margin-bottom: 12px; font-weight: 900; }
+  .value-card p { font-size: 0.9rem; line-height: 1.6; }
+  .final-word-punch { font-size: 1.4rem; font-weight: 1000; margin-top: 40px; font-style: italic; color: #ff4d4d; border-top: 2px solid #333; padding-top: 30px; line-height: 1.3; }
 
-  .report-footer { background: black; color: white; padding: 80px 40px; text-align: center; }
-  .value-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 50px; text-align: left; }
-  .value-card { background: #1a1a1a; padding: 40px; border: 1px solid #e63946; }
-  .value-card h4 { color: #e63946; font-size: 1.3rem; margin-bottom: 15px; font-weight: 900; }
-  .final-word-punch { font-size: 2rem; font-weight: 1000; margin-top: 60px; font-style: italic; color: #ff4d4d; border-top: 2px solid #333; padding-top: 40px; }
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 10px; }
+  .enlarged-img { max-width: 100%; max-height: 80vh; border: 2px solid white; object-fit: contain; }
+  .overlay-text { color: white; position: absolute; bottom: 20px; font-weight: 900; }
 
-  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 10000; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-  .enlarged-img { max-width: 90%; max-height: 85vh; border: 4px solid white; object-fit: contain; }
+  @media (min-width: 900px) {
+    .sticky-nav { padding: 15px 40px; }
+    .nav-title { font-size: 1.1rem; }
+    .back-btn { font-size: 1rem; padding: 8px 20px; }
+    .go_ext_page { font-size: 0.9rem; padding: 10px 20px; }
+    .report-container { margin: 60px auto; padding: 0 20px; }
+    .report-header { border-left: 15px solid black; padding-left: 30px; }
+    .report-header h1 { font-size: 2.5rem; }
+    .summary-lead { font-size: 1.2rem; }
+    .report-section { padding: 50px; }
+    .section-manga-eye h2 { font-size: 2rem; }
+    .report-content { flex-direction: row; gap: 50px; }
+    .report-content.reverse { flex-direction: row-reverse; }
+    .report-text { flex: 1.6; }
+    .visual-column-emphasized { flex: 1; }
+    .value-grid { grid-template-columns: 1fr 1fr; }
+    .final-word-punch { font-size: 2rem; }
+    .gensen-impact { transform: scale(1.1); }
+  }
 `;
