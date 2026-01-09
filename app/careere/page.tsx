@@ -89,8 +89,11 @@ export default function CareerVisionPage() {
           <div className="content-inner">
             <h2 className="section-title jp-title" style={{ borderBottom: 'none', marginBottom: '10px' }}>最後に</h2>
             <p className="description">
+                 私は夢を諦めております。クリエイターが筆を折る際の痛みや苦悩、その理由について深い共感をしております。
+              クリエイターを支えたいというのは心からでた言葉です。
               私はどの職種であっても貴社が掲げるクリエイタージャーニーを支える覚悟でおります。
               学費完納で証明した不屈のガッツと情報科学の知見は、貴社のどの部署においても揺るぎない力になると考えております。
+             
             </p>
           </div>
         </section>

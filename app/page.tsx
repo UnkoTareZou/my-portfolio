@@ -67,7 +67,7 @@ export default function MangaRandomTopPage() {
   <div className="manga-panel branch-btn" style={{ transform: 'rotate(0.5deg)', backgroundColor: 'black', color: 'white', height: '100%' }}>
     <div className="grit-content">
       <div className="grit-sub">希望職種</div>
-      <div className="grit-main">わたくしが<br/>PROJECT LEADER</div>
+      <div className="grit-main">私の貢献できることと希望職種<br/></div>
       <div className="details-btn" style={{ background: 'white', color: 'black' }}>GO TO GOAL →</div>
     </div>
   </div>
