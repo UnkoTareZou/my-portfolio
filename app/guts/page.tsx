@@ -61,7 +61,7 @@ export default function GutsPage() {
               <h3>【背景・課題：店舗レコードの更新】</h3>
               <p>
                 私は自由が丘のビックエコーで働いています。
-                自由が丘駅前店は、梅田、横浜、恵比寿、日本橋や渋谷のような「屈指の繁忙店」ではありません。
+                自由が丘駅前店は、梅田、横浜、恵比寿、日本橋や渋谷のような「屈指 of 繁忙店」ではありません。
                 しかし私は12月の最繁忙期に24日の出勤、210時間の稼働をし（図1）、店舗の歴史の中で断トツとなる「1650万円」の月商を達成しました。
                 従来のレコードを113%以上更新したこの数字は、全国440店舗以上の全ビックエコーの中で
                 12位という偉業に繋がりました。
@@ -113,7 +113,7 @@ export default function GutsPage() {
               
               <h3>【誠実さの物理的な証明】</h3>
               <p>
-                私が背負う多額の奨学金。これは「不退転の誓い」です。卒業までの学費450万円を自らの手で支払い切った責任感を、次は世界のクリエイターが安心して夢を描くための環境を20年、30年と守り抜くために注ぎます。
+                私が背負う多額の奨学金. これは「不退転 of 誓い」です。卒業までの学費450万円を自らの手で支払い切った責任感を、次は世界のクリエイターが安心して夢を描くための環境を20年、30年と守り抜くために注ぎます。
                 私は決して逃げません。この負債さえ、貴社で努力するためのガソリンです。
               </p>
 
@@ -190,6 +190,7 @@ const gutsFinalStyles = `
   .chapter { background: black; color: white; padding: 4px 10px; font-weight: 900; font-size: 0.8rem; }
   .section-manga-eye h2 { font-size: 1.4rem; font-weight: 900; margin-top: 15px; }
 
+  /* スマホは縦並び */
   .report-content { display: flex; flex-direction: column; gap: 30px; }
   .report-text { width: 100%; }
   .report-text h3 { font-size: 1.1rem; font-weight: 900; margin-top: 25px; color: #e63946; border-bottom: 2px solid #e63946; display: inline-block; }
@@ -199,16 +200,15 @@ const gutsFinalStyles = `
   .result-box-highlight p { margin: 8px 0; font-weight: 800; color: #e63946; font-size: 0.9rem; }
 
   .visual-column-emphasized { width: 100%; display: flex; flex-direction: column; gap: 30px; }
-  .report-visual { border: 4px solid black; padding: 8px; background: #fff; cursor: zoom-in; width: 100%; box-sizing: border-box; }
-  
-  .shift-visual { max-width: 100%; }
-  .shift-visual img { width: 100%; height: auto; display: block; }
+  .report-visual { border: 4px solid black; padding: 10px; background: #fff; cursor: zoom-in; width: 100%; box-sizing: border-box; }
+  .report-visual img { width: 100%; height: auto; display: block; object-fit: contain; }
 
-  .gensen-impact { border: 8px solid #e63946 !important; box-shadow: 10px 10px 0px rgba(230, 57, 70, 0.1); }
-  .impact-badge { position: absolute; top: -10px; right: -10px; background: #e63946; color: white; padding: 3px 12px; font-weight: 900; font-size: 1rem; transform: rotate(5deg); box-shadow: 3px 3px 0px black; }
+  .shift-visual { max-width: 100%; }
+  .gensen-impact { border: 8px solid #e63946 !important; position: relative; }
+  .impact-badge { position: absolute; top: -10px; right: -10px; background: #e63946; color: white; padding: 3px 12px; font-weight: 900; font-size: 1rem; transform: rotate(5deg); box-shadow: 3px 3px 0px black; z-index: 5; }
 
   .tuition-small { max-width: 100%; }
-  .caption { font-size: 0.75rem; font-weight: 800; color: #666; margin-top: 8px; text-align: center; line-height: 1.4; }
+  .caption { font-size: 0.75rem; font-weight: 800; color: #666; margin-top: 12px; text-align: center; line-height: 1.4; }
 
   .report-footer { background: black; color: white; padding: 50px 20px; text-align: center; }
   .value-grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 40px; text-align: left; }
@@ -221,23 +221,26 @@ const gutsFinalStyles = `
   .enlarged-img { max-width: 100%; max-height: 80vh; border: 2px solid white; object-fit: contain; }
   .overlay-text { color: white; position: absolute; bottom: 20px; font-weight: 900; }
 
+  /* PC向け：キャプションを救出しつつサイズを制限 */
   @media (min-width: 900px) {
-    .sticky-nav { padding: 15px 40px; }
-    .nav-title { font-size: 1.1rem; }
-    .back-btn { font-size: 1rem; padding: 8px 20px; }
-    .go_ext_page { font-size: 0.9rem; padding: 10px 20px; }
     .report-container { margin: 60px auto; padding: 0 20px; }
-    .report-header { border-left: 15px solid black; padding-left: 30px; }
     .report-header h1 { font-size: 2.5rem; }
-    .summary-lead { font-size: 1.2rem; }
     .report-section { padding: 50px; }
-    .section-manga-eye h2 { font-size: 2rem; }
-    .report-content { flex-direction: row; gap: 50px; }
+    
+    .report-content { flex-direction: row; gap: 50px; align-items: flex-start; }
     .report-content.reverse { flex-direction: row-reverse; }
     .report-text { flex: 1.6; }
-    .visual-column-emphasized { flex: 1; }
+    
+    /* 画像コンテナの幅を固定 */
+    .visual-column-emphasized { flex: 0 0 400px; width: 400px; } 
+    .shift-visual { flex: 0 0 400px; width: 400px; }
+    
+    /* overflowを外し、flex-directionをcolumnにすることでキャプションを下に出す */
+    .report-visual { display: flex; flex-direction: column; height: auto; }
+    .report-visual img { max-height: 450px; width: 100%; object-fit: contain; }
+
     .value-grid { grid-template-columns: 1fr 1fr; }
     .final-word-punch { font-size: 2rem; }
-    .gensen-impact { transform: scale(1.1); }
+    .gensen-impact { transform: scale(1.05); }
   }
 `;
