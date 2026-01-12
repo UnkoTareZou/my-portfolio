@@ -81,14 +81,14 @@ export default function AboutPage() {
           <section className="manga-panel link-panel">
             <div className="panel-header-badge">03. INTELLECT</div>
             <div className="intellect-content">
-              <h2 className="sub-panel-title">RESEARCH</h2>
+              <h2 className="sub-panel-title">RESEARCH  <span className='text-lookme'>追伸あり</span> </h2>
               <p className="lab-name">東京都市大学 応用数理研究室</p>
               <div className="code-snippet-box">
                 C言語：符号理論の実装
                 スループット最大化への挑戦
               </div>
               <p className="intellect-desc">
-                週6のバイトと並行し、技術への執着も一切緩めませんでした。
+               <span className='text-lookme'></span> 
               </p>
               <div className="intellect-link-label">
                 大学での研究詳細を見る →
@@ -163,7 +163,11 @@ const aboutStyles = `
   .mission-sub { font-weight: 800; font-style: italic; color: #aaa; margin-top: 15px; }
   .baan-overlay-container { position: fixed; z-index: 100000; transform: translate(-50%, -50%); pointer-events: none; }
   .baan-img { width: 50vw; max-width: 700px; }
-
+.text-lookme {
+  color: #ff0000 !important;
+  font-size: 3.5rem;
+  font-weight: 900;
+}
   @keyframes baan-pop { 
     0% { transform: scale(0.1) rotate(-10deg); opacity: 0; } 
     30% { transform: scale(1.2) rotate(5deg); opacity: 1; } 

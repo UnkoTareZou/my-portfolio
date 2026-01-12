@@ -34,6 +34,7 @@ export default function MangaRandomTopPage() {
       {isVisible && (
         <div className="splash-screen" style={{ opacity: isFading ? 0 : 1 }}>
           <h1>NAKANO PORTFOLIO</h1>
+          <h2 className='splash-ps'>追伸があります</h2>
         </div>
       )}
 
@@ -81,7 +82,8 @@ export default function MangaRandomTopPage() {
       {/* 自己紹介リンク */}
       <Link href="/about" className="area-btn1">
         <div className="manga-panel branch-btn">
-          <div className="centered-content"><h3>1.自己紹介</h3></div>
+          <div className="centered-content"><h3>1.自己紹介  </h3></div>
+        <p><span className='text-lookme'>学習内容に追伸あり</span></p>
         </div>
       </Link>
 
@@ -162,6 +164,33 @@ const globalStyles = `
   .branch-btn:hover { background-color: black !important; color: white !important; }
   .centered-content { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
   .centered-content h3 { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 900; margin: 0; }
+.text-lookme {
+  color: #ff0000 !important;
+  font-size: 3.5rem;
+  font-weight: 900;
+}
+/* ★ 追伸ありの配置設定 */
+.splash-ps {
+  position: absolute;   /* 親要素に対して自由な場所に配置 */
+  bottom: 10%;          /* 下から10%の位置に固定 */
+  left: 50%;            /* 左から50%の位置へ */
+  transform: translateX(-50%); /* 自分の幅の半分だけ戻して、完全に中央へ！ */
+  
+  color: #ff0000;       /* 目立つように黄色（またはお前の好きな赤） */
+  font-size: 3.2rem;
+  font-weight: 900;
+  letter-spacing: 0.3rem; /* 文字の間隔を広げてカッコよく */
+  
+  /* おまけ：点滅させて「見てくれ！」感を出す */
+  animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
 
   .splash-screen {
     background-color: white; position: fixed; inset: 0; z-index: 9999;

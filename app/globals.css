@@ -9,7 +9,7 @@ html, body {
   background-color: #000; 
 }
 
-/* アニメーション設定（そのまま） */
+/* アニメーション設定 */
 @keyframes pan-br {
   0% { transform: scale(1.1) translate(0, 0); }
   100% { transform: scale(1.2) translate(-2%, -2%); }
@@ -23,23 +23,21 @@ html, body {
 .animate-pan-br { animation: pan-br 3s ease-in-out infinite alternate; }
 .animate-pan-tl { animation: pan-tl 4s ease-in-out infinite alternate; }
 
-/* 既存の .manga-panel:hover をこれに書き換えろ！ */
+/* ホバー設定 */
 .manga-panel:hover {
-  /* ホバーした時にだけ、うっすらドット模様を重ねる */
   background-image: radial-gradient(#ccc 15%, transparent 16%);
   background-size: 4px 4px; /* ドットの細かさ */
   transform: translateY(-5px); /* ちょっと上に浮かす */
   box-shadow: 15px 15px 0px rgba(0,0,0,1) !important;
 }
 
-/* まず、パネル自体に集中線を表示するための準備 */
+/* パネル本体の集中線準備 */
 .manga-panel {
-  /* 既存のスタイルに加えて、これを追加 */
   position: relative;
   overflow: hidden; /* 集中線がはみ出さないように */
 }
 
-/* 疑似要素で集中線を作る！ */
+/* 疑似要素で集中線を作る */
 .manga-panel::after {
   content: "";
   position: absolute;
@@ -55,38 +53,65 @@ html, body {
   z-index: 1; /* 画像より手前、文字より奥 */
 }
 
+/* 特定の文字を強調する赤色 */
+.text-red {
+  color: #ff0000 !important; /* 純粋な赤 */
+  font-weight: 800; /* 少し太くするとより目立つ！ */
+}
 
+/* 修正点：h1の設定を独立させ、以降のスタイルの邪魔をしないように閉じる */
+h1 {
+  /* 必要があればここにスタイルを記述 */
+}
 
-
-h1{
-/* ホバーした時の画像や中身のフィルタを変更 */
+/* ホバーした時の画像や中身のフィルタを変更（h1の外に出したぜ） */
 .manga-panel:hover img,
 .manga-panel:hover div {
-  /* コントラストを上げて、完全に白黒にする */
-  filter: contrast(1.5) grayscale(100%) !important;
-  transition: filter 0.3s ease;
+  filter: contrast(120%) brightness(90%);
 }
 
-}h1
-
-/* もともとセピアがかかっている画像の調整 */
-.manga-panel:hover img[style*="sepia"] {
-    filter: contrast(1.5) grayscale(100%) sepia(0) !important;
+/* スプラッシュ画面全体のコンテナ */
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #000; /* 黒背景 */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* これで h1 は真ん中に来るぜ */
+  z-index: 9999;
+  transition: opacity 0.8s ease; /* フェードアウト用 */
 }
-/* ※注意：文字が集中線の下に隠れないように、文字要素には z-index: 2 以上を指定する必要があるかもしれないぜ！ */
 
+/* メインタイトル (NAKANO PORTFOLIO) */
+.splash-screen h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 0.2rem;
+  margin: 0;
+}
 
-/* 制作物一覧のパネルにだけ「ドンッ！」を出す例 */
-.branch-btn:hover::before {
- /* content: "ドンッ！！";*/
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  font-family: "Impact", "Arial Black", sans-serif; /* 太いフォントで */
-  font-size: 2rem;
-  color: black;
-  -webkit-text-stroke: 1px white; /* 白い縁取りでマンガっぽく */
-  transform: rotate(-10deg);
-  z-index: 10;
-  pointer-events: none;
+/* ★ここがお前のやりたい「真ん中下」の設定だ！ */
+.splash-screen h2 {
+  position: absolute;  /* 絶対配置に切り替えるぜ */
+  bottom: 60px;        /* 下から 60px の位置に固定（好みで調整してくれ！） */
+  left: 50%;           /* 左から 50% の位置へ */
+  transform: translateX(-50%); /* 自分の幅の半分だけ戻して、完全に中央へ！ */
+  
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffff00;      /* 目立つように黄色にするのもアリだぜ！ */
+  letter-spacing: 0.5rem;
+  animation: pulse 1.5s infinite; /* ついでに点滅させて「見てくれ」感を出そうぜ */
+}
+
+/* 点滅アニメーション（おまけだ！） */
+@keyframes pulse {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
 }

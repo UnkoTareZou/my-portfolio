@@ -14,8 +14,6 @@ export default function StudyDetailPage() {
         </Link>
       </nav>
 
-      
-
       <div className="content-wrapper">
         <header className="page-header">
           <p className="label">ACADEMIC & RESEARCH</p>
@@ -95,6 +93,47 @@ export default function StudyDetailPage() {
               何度でも粘り強く手を動かす実装力と理論に基づいた客観的分析。
               在学中に身に着けたこの研究に対する姿勢で、貴社の製品開発や課題解決に向けて、技術的な課題を一つずつ突破していく覚悟です。
             </p>
+
+            {/* 追伸*/}
+            <div className="ps-box">
+              <p>
+                <strong>追伸</strong><br />
+                本項目について、概略のみの説明となってしまい申し訳ございません。<br />
+                アクセスログを監視していたところ、研究分野や学んだ内容についてのアクセス数が多く、そちらについて詳細を述べたく思い、追伸で説明させていただきました。<br />
+                下記を読んでいただければ確かに情報科学を4年間学んだ情報学従であることが分かると思います。<br />
+                その事実以上に貴社製品クリップスタジオのファンであり人生をささげてきたものとして、リソースを熱意に注ぎすぎてしまいました。<br />
+                しかしながらわたくしの技術や知識も本物であることを示したこのような文章を作成いたしました。<br />
+                私が大学で何を学んだか、具体的に説明させていただきたく提出後に訂正いたしました。<br /><br />
+                本訂正を貴社への熱意や志望度の高さと受け取っていただければこれ以上の幸せはありません。<br /><br />
+              
+                <span className='text-red'>プログラミング</span>では主にC言語を用いて実習をしておりました。具体的にはポインタやノードなどを用いてメモリ管理や関数や変数の書き方です。1年間毎週4コマの徹底した基礎作りは私の現在のプログラミングスキルに活かされています。
+                <br /><br />
+                この科目を基礎として、FIFO,RR,優先度付きRR,などのスケジューリングアルゴリズムや遺伝的アルゴリズムの実装をC言語で行いました。
+                また、入力音声二つに対して類似性を確かめるDPマッチング方式などを実装しました。登録されたデータと実際に入力する音声の類似性を確かめるアルゴリズムの正確性を確かめるために、音声で操作できるゲームなども作成しました。
+                <br /><br />
+                <span className='text-red'>人工知能</span>の講義では
+                LISPから学び始め、再起的な考え方を吸収し深層学習やCNNの転移学習で画像認識なども行いました（python,keras,TensorFlowを用いた開発モデルです）。
+                強化学習でのSarasaやQ学習を始めとしたモデルを学び最適化のシミレーション手法の基礎を学びました。<br /><br />
+                <span className='text-red'>コンピュータネットワーク</span>ではOSI基本参照モデルのような礎的な話から始まり、ソケットプログラミングを学び、Wiresharkを活用したプロトコルスタックの動的な解析を行いました。3ハンドシェイクによるコネクションの確立やパケットの再送制御などのトランスポート層におけるきょどうをパケットレベルで確認しました。
+                。UDPやTCPの差や輻湊制御を学びました。
+                ネットワークセキュリティについても学び、情報理論で学んだ数理的な鍵を持いた機密保持に関する理解や、不正新種検知（NIDS）についても学びました。<br /><br />
+
+                その他大学では座学的な画像処理やopencvを用いた画像の編集なども行いました。制作物の前進段階のコードはこちらの講義で実装しました。<br />
+                デジタル信号処理ではA/D変換の理論をフーリエ解析を用いて理解しました。卒業研究と分野が同じである符号理論や情報理論では情報の信頼性を確かなものにすべく圧縮法やパリティチチェックのアルゴリズムを学びました。<br/>
+                卒業研究では雑音のあるAWGN通信路におけるビットごとの誤り確率を最小にするべく、受信シンボルの消失等を取り入れることで誤り確率を低減し、復号に用いられるガウス消去法の計算回数の最適化を目指しました。その際に雑音のある通信路やガウス消去法の複雑な行列計算法、提案アルゴリズムをコーディングしシミレーションを繰り返しました。
+                <br/><br/>
+                貴社やクリエイターにかける熱意はこのポートフォリオの通り純粋そのものですが、私自身の能力について証明したく思いました。
+                <br/>
+                もしこれをお読みでしたら、改めてわたくしの評価をお願い申し上げます。
+                再三申し上げまして恐縮ですが私はクリエイター様に貢献すべく、CSなどエンジニアの枠にはこだわらずに貢献し続けるつもりです。
+                本ポートフォリオにて私の意志や、それを遂行する理由。またやり続けられる覚悟や動機が伝わっていれば幸いです。
+
+              <br/>
+              貴重なお時間お取りいただき心より感謝申し上げます。
+              <br/><br/>
+              2026年1月13日 中野恭輔 
+              </p>
+            </div>
           </div>
         </section>
       </div>
@@ -125,10 +164,34 @@ const studyStyles = `
 
   .dark-section { background: #1a1a1a; color: #fff; border: none; }
   .dark-section .section-title { background: #fff; color: #1a1a1a; }
-  .conclusion-text { font-size: 1.05rem; line-height: 1.8; font-weight: 600; }
+  .conclusion-text { font-size: 1.1rem; line-height: 1.8; font-weight: 800; margin-bottom: 30px; }
+
+  /* 追伸専用：ここを大きく強調 */
+  .ps-box { 
+    border: 4px solid #fff; 
+    padding: 25px; 
+    margin-top: 20px; 
+    background: #2a2a2a; 
+    box-shadow: 8px 8px 0px #fff;
+  }
+  .ps-box p { 
+    font-size: 1.15rem; 
+    line-height: 1.9; 
+    font-weight: 600; 
+    color: #eee;
+    margin-bottom: 0;
+  }
+  .ps-box strong { font-size: 1.4rem; color: #ffff00; }
+  /* studyStyles の最後の方、.ps-box strong の後あたりに追加 */
+.ps-box strong { font-size: 1.4rem; color: #ffff00; }
+
+.text-red {
+  color: #b8d15e !important;
+  font-weight: 800;
+}
 
   p { line-height: 1.8; margin-bottom: 15px; font-weight: 500; font-size: 1rem; }
   .course-summary { font-size: 0.9rem; font-style: italic; color: #666; margin-top: 20px; }
   
-  @media (max-width: 600px) { .panel-inner { padding: 20px; } }
-`; 
+  @media (max-width: 600px) { .panel-inner { padding: 20px; } .ps-box { padding: 15px; } .ps-box p { font-size: 1rem; } }
+`;
